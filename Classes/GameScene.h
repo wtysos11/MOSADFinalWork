@@ -16,7 +16,16 @@ public:
 	virtual bool init();
 	CREATE_FUNC(GameScene);
 	void update(float f);
+	void attackMenuCallback(Ref * pSender);
+	void deadMenuCallback(Ref * pSender);
+	void walkMenuCallback(Ref * pSender);
+	void quitCallback(Ref * pSender);
 	void onMouseMove(EventMouse* event);
 private:
 	MonsterManager manager;
+	Sprite * healthBar;
+	Sprite * enemy1;
+	int towerLandsNum;
+	std::vector<Sprite*> towerLands;
+	std::vector<Vec2> towerLandsPositions;
 };
