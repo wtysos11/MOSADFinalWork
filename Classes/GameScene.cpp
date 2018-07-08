@@ -192,103 +192,123 @@ bool GameScene::init()
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-	/*
+	
 	//线路1，开头为左侧8点钟方向，主干
-	auto checkpointa1 = Sprite::create("go_towers-2_2.png");
-	checkpointa1->setPosition(0, 165);
+	auto checkpointa1 = Sprite::create("OneNormal.png");
+	checkpointa1->setPosition(0, 189);
 	this->addChild(checkpointa1, 2);
 
-	auto checkpointa2 = Sprite::create("go_towers-2_2.png");
-	checkpointa2->setPosition(100, 194);
+	auto checkpointa2 = Sprite::create("OneNormal.png");
+	checkpointa2->setPosition(100, 212);
 	this->addChild(checkpointa2, 2);
 
-	auto checkpointa3 = Sprite::create("go_towers-2_2.png");
+	auto checkpointa3 = Sprite::create("OneNormal.png");
 	checkpointa3->setPosition(200, 259);
 	this->addChild(checkpointa3, 2);
 
-	auto checkpointa3a = Sprite::create("go_towers-2_2.png");
+	auto checkpointa3a = Sprite::create("OneNormal.png");
 	checkpointa3a->setPosition(243, 277);
 	this->addChild(checkpointa3a, 2);
 
-	auto checkpointa4 = Sprite::create("go_towers-2_2.png");
-	checkpointa4->setPosition(300, 253);
+	auto checkpointa4 = Sprite::create("OneNormal.png");
+	checkpointa4->setPosition(300, 300);
 	this->addChild(checkpointa4, 2);
 
-	auto checkpointa4a = Sprite::create("go_towers-2_2.png");
+	auto checkpointa4a = Sprite::create("OneNormal.png");
 	checkpointa4a->setPosition(374, 308);
 	this->addChild(checkpointa4a, 2);
 
-	auto checkpointa5 = Sprite::create("go_towers-2_2.png");
+	auto checkpointa5 = Sprite::create("OneNormal.png");
 	checkpointa5->setPosition(400, 300);
 	this->addChild(checkpointa5, 2);
 
-	auto checkpointa6 = Sprite::create("go_towers-2_2.png");
-	checkpointa6->setPosition(500, 270);
+	auto checkpointa6 = Sprite::create("OneNormal.png");
+	checkpointa6->setPosition(500, 339);
 	this->addChild(checkpointa6, 2);
 
-	auto checkpointa7 = Sprite::create("go_towers-2_2.png");
-	checkpointa7->setPosition(548, 164);
+	auto checkpointa7 = Sprite::create("OneNormal.png");
+	checkpointa7->setPosition(600, 318);
 	this->addChild(checkpointa7, 2);
+	
+	auto checkpointa8 = Sprite::create("OneNormal.png");
+	checkpointa8->setPosition(700, 245);
+	this->addChild(checkpointa8, 2);
+
+	auto checkpointa9 = Sprite::create("OneNormal.png");
+	checkpointa9->setPosition(735, 183);
+	this->addChild(checkpointa9, 2);
 
 	//线路2，左侧10点钟方向，与线路1合并后结束
-	auto checkpointb1 = Sprite::create("go_towers-2_2.png");
-	checkpointb1->setPosition(0, 463);
+	auto checkpointb1 = Sprite::create("OneNormal.png");
+	checkpointb1->setPosition(0, 493);
 	this->addChild(checkpointb1, 2);
 
-	auto checkpointb2 = Sprite::create("go_towers-2_2.png");
-	checkpointb2->setPosition(100, 390);
+	auto checkpointb2 = Sprite::create("OneNormal.png");
+	checkpointb2->setPosition(100, 441);
 	this->addChild(checkpointb2, 2);
 
-	auto checkpointb3 = Sprite::create("go_towers-2_2.png");
-	checkpointb3->setPosition(200, 410);
+	auto checkpointb3 = Sprite::create("OneNormal.png");
+	checkpointb3->setPosition(200, 450);
 	this->addChild(checkpointb3, 2);
 
-	auto checkpointb4 = Sprite::create("go_towers-2_2.png");
-	checkpointb4->setPosition(300, 400);
+	auto checkpointb4 = Sprite::create("OneNormal.png");
+	checkpointb4->setPosition(300, 460);
 	this->addChild(checkpointb4, 2);
 
+	auto checkpointb5 = Sprite::create("OneNormal.png");
+	checkpointb5->setPosition(400, 432);
+	this->addChild(checkpointb5, 2);
+
 	//线路3，12点钟
-	auto checkpointc1 = Sprite::create("go_towers-2_2.png");
-	checkpointc1->setPosition(567, 636);
+	auto checkpointc1 = Sprite::create("OneNormal.png");
+	checkpointc1->setPosition(757, 698);
 	this->addChild(checkpointc1, 2);
 
-	auto checkpointc2 = Sprite::create("go_towers-2_2.png");
-	checkpointc2->setPosition(533, 503);
+	auto checkpointc2 = Sprite::create("OneNormal.png");
+	checkpointc2->setPosition(732, 619);
 	this->addChild(checkpointc2, 2);
 
-	auto checkpointc3 = Sprite::create("go_towers-2_2.png");
-	checkpointc3->setPosition(567, 403);
+	auto checkpointc3 = Sprite::create("OneNormal.png");
+	checkpointc3->setPosition(737, 495);
 	this->addChild(checkpointc3, 2);
 
-	auto checkpointc4 = Sprite::create("go_towers-2_2.png");
-	checkpointc4->setPosition(628, 329);
+	auto checkpointc4 = Sprite::create("OneNormal.png");
+	checkpointc4->setPosition(801, 409);
 	this->addChild(checkpointc4, 2);
 
-	auto checkpointc5 = Sprite::create("go_towers-2_2.png");
-	checkpointc5->setPosition(691, 267);
+	auto checkpointc5 = Sprite::create("OneNormal.png");
+	checkpointc5->setPosition(916, 303);
 	this->addChild(checkpointc5, 2);
 
-	auto checkpointc6 = Sprite::create("go_towers-2_2.png");
-	checkpointc6->setPosition(669, 176);
+	auto checkpointc6 = Sprite::create("OneNormal.png");
+	checkpointc6->setPosition(916, 199);
 	this->addChild(checkpointc6, 2);
 
 	//线路4,3点钟方向
-	auto checkpointd1 = Sprite::create("go_towers-2_2.png");
-	checkpointd1->setPosition(947, 372);
+	auto checkpointd1 = Sprite::create("OneNormal.png");
+	checkpointd1->setPosition(1244, 413);
 	this->addChild(checkpointd1, 2);
 
-	auto checkpointd2 = Sprite::create("go_towers-2_2.png");
-	checkpointd2->setPosition(813, 365);
+	auto checkpointd2 = Sprite::create("OneNormal.png");
+	checkpointd2->setPosition(1077, 396);
 	this->addChild(checkpointd2, 2);
-	*/
-	/*
+	
+	
 	myLine line;
-	line.addPoint(0, 463);
-	line.addPoint(100, 390);
-	line.addPoint(200, 410);
-	line.addPoint(300, 400);
+	line.addPoint(0, 189);
+	line.addPoint(100, 212);
+	line.addPoint(200, 259);
+	line.addPoint(243, 277);
+	line.addPoint(300, 300);
+	line.addPoint(374, 308);
+	line.addPoint(400, 300);
+	line.addPoint(500, 339);
+	line.addPoint(600, 318);
+	line.addPoint(700, 245);
+	line.addPoint(735, 183);
+	line.addPoint(myXPosition, myYPosition - 300);
 	manager.createMonster("go_towers-2_02.png",this,line,myProperty(100,50));
-	*/
+	
 	schedule(schedule_selector(GameScene::update), 0.1f, kRepeatForever, 0);
 	return true;
 }
