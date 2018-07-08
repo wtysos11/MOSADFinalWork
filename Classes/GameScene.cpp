@@ -156,7 +156,6 @@ bool GameScene::init()
 	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	// 这些按钮只是用来测试帧动画，可以参考以下方法使用帧动画
 	// 准备使用3种enemy，每种enemy只有3个动作，就是行走、攻击、死亡。
-	// 帧动画目前做好了一种，你们先拿enemy1来做，剩下两个的动作也一样的。剩下两个的我稍后给出。
 
 	// 添加enemy1并播放帧动画(在AppDelegate.cpp里加载好了帧动画资源）
 	enemy1 = Sprite::createWithSpriteFrameName("enemy1_0.png");
@@ -165,6 +164,22 @@ bool GameScene::init()
 	enemy1->runAction(RepeatForever::create(enemy1Animation));
 	enemy1->setPosition(Vec2(myXPosition, myYPosition));
 	this->addChild(enemy1, 2);
+
+	// 添加enemy2并播放帧动画(在AppDelegate.cpp里加载好了帧动画资源）
+	enemy2 = Sprite::createWithSpriteFrameName("enemy2_0.png");
+	enemy2->setScale(0.8);
+	Animate* enemy2Animation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy2Animation"));
+	enemy2->runAction(RepeatForever::create(enemy2Animation));
+	enemy2->setPosition(Vec2(myXPosition + 200, myYPosition));
+	this->addChild(enemy2, 2);
+
+	// 添加enemy3并播放帧动画(在AppDelegate.cpp里加载好了帧动画资源）
+	enemy3 = Sprite::createWithSpriteFrameName("enemy3_0.png");
+	enemy3->setScale(0.8);
+	Animate* enemy3Animation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy3Animation"));
+	enemy3->runAction(RepeatForever::create(enemy3Animation));
+	enemy3->setPosition(Vec2(myXPosition - 200, myYPosition));
+	this->addChild(enemy3, 2);
 
 	// 攻击
 	auto attackMenuItem = MenuItemLabel::create(Label::createWithSystemFont("attack", "fonts/Marker Felt.ttf", 50),
@@ -294,7 +309,7 @@ bool GameScene::init()
 	this->addChild(checkpointd2, 2);
 	
 	
-	myLine line;
+	myLine line;/*
 	line.addPoint(0, 189);
 	line.addPoint(100, 212);
 	line.addPoint(200, 259);
@@ -303,11 +318,11 @@ bool GameScene::init()
 	line.addPoint(374, 308);
 	line.addPoint(400, 300);
 	line.addPoint(500, 339);
-	line.addPoint(600, 318);
+	line.addPoint(600, 318);*/
 	line.addPoint(700, 245);
 	line.addPoint(735, 183);
 	line.addPoint(myXPosition, myYPosition - 300);
-	manager.createMonster("go_towers-2_02.png",this,line,myProperty(100,50));
+	manager.createMonster("enemy3_0.png",this,line,myProperty(100,50));
 	
 	schedule(schedule_selector(GameScene::update), 0.1f, kRepeatForever, 0);
 	return true;
@@ -336,18 +351,42 @@ void GameScene::attackMenuCallback(Ref* pSender) {
 	enemy1->stopAllActions();
 	Animate* enemy1AttackAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy1AttackAnimation"));
 	enemy1->runAction(enemy1AttackAnimation);
+
+	enemy2->stopAllActions();
+	Animate* enemy2AttackAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy2AttackAnimation"));
+	enemy2->runAction(enemy2AttackAnimation);
+
+	enemy3->stopAllActions();
+	Animate* enemy3AttackAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy3AttackAnimation"));
+	enemy3->runAction(enemy3AttackAnimation);
 }
 
 void GameScene::deadMenuCallback(Ref* pSender) {
 	enemy1->stopAllActions();
 	Animate* enemy1DeadAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy1DeadAnimation"));
 	enemy1->runAction(enemy1DeadAnimation);
+
+	enemy2->stopAllActions();
+	Animate* enemy2DeadAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy2DeadAnimation"));
+	enemy2->runAction(enemy2DeadAnimation);
+
+	enemy3->stopAllActions();
+	Animate* enemy3DeadAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy3DeadAnimation"));
+	enemy3->runAction(enemy3DeadAnimation);
 }
 
 void GameScene::walkMenuCallback(Ref* pSender) {
 	enemy1->stopAllActions();
-	Animate* enemy1DeadAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy1Animation"));
-	enemy1->runAction(RepeatForever::create(enemy1DeadAnimation));
+	Animate* enemy1Animation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy1Animation"));
+	enemy1->runAction(RepeatForever::create(enemy1Animation));
+
+	enemy2->stopAllActions();
+	Animate* enemy2Animation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy2Animation"));
+	enemy2->runAction(RepeatForever::create(enemy2Animation));
+
+	enemy3->stopAllActions();
+	Animate* enemy3Animation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy3Animation"));
+	enemy3->runAction(RepeatForever::create(enemy3Animation));
 }
 
 void GameScene::quitCallback(Ref* pSender) {

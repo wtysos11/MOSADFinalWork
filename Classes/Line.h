@@ -30,14 +30,23 @@ public:
 			{
 				nextPoint();
 			}
-			else
-			{
-				CCLOG("END");
-			}
 
 			return true;
 		}
 		return false;
+	}
+
+	//检查是否走到了终点
+	bool checkEnd(Vec2 current)
+	{
+		if (current.distance(line[now_point]) < 20.0f && endPoint())
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	void nextPoint(void)
@@ -65,6 +74,7 @@ public:
 		this->now_point = rhs.now_point;
 		return *this;
 	}
+
 };
 
 #endif
