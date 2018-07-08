@@ -105,17 +105,24 @@ public:
 	}
 	void updateAll()
 	{
-		for (unsigned int i = 0; i < storage.size(); i++)
+		for (auto iter = storage.begin();iter!=storage.end();)
 		{
-			if (storage[i].isActive)
+			bool end = false;
+			if ((*iter).isActive)
 			{
-				bool ending = storage[i].moveForward(0.1f);
+				bool ending = (*iter).moveForward(0.1f);
 				if (!ending)
 				{
 					//播放死亡动画，并在死亡后消灭它
-					monsterAnimate(storage[i], "dead");
-					storage[i].isActive = false;
+					monsterAnimate(*iter, "dead");
+					(*iter).isActive = false;
+					iter = storage.erase(iter);
+					end = true;
 				}
+			}
+			if (!end)
+			{
+				iter++;
 			}
 
 		}
@@ -133,19 +140,25 @@ public:
 			{
 				enemy->stopAllActions();
 				Animate* enemy1DeadAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy1DeadAnimation"));
-				enemy->runAction(enemy1DeadAnimation);
+				enemy->runAction(Sequence::create(enemy1DeadAnimation, CCDelayTime::create(1), CallFunc::create([enemy]() {
+					enemy->removeFromParentAndCleanup(false);
+				}), nullptr));
 			}
 			else if (monster.getType() == 2)
 			{
 				enemy->stopAllActions();
 				Animate* enemy2DeadAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy2DeadAnimation"));
-				enemy->runAction(enemy2DeadAnimation);
+				enemy->runAction(Sequence::create(enemy2DeadAnimation, CCDelayTime::create(1), CallFunc::create([enemy]() {
+					enemy->removeFromParentAndCleanup(false);
+				}), nullptr));
 			}
 			else if (monster.getType() == 3)
 			{
 				enemy->stopAllActions();
-				Animate* enemy3DeadAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy3DeadAnimation"));
-				enemy->runAction(enemy3DeadAnimation);
+				Animate* enemy3DeadAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy3DeadAnimation")); 
+				enemy->runAction(Sequence::create(enemy3DeadAnimation, CCDelayTime::create(1), CallFunc::create([enemy]() {
+					enemy->removeFromParentAndCleanup(false);
+				}), nullptr));
 			}
 		}
 	}

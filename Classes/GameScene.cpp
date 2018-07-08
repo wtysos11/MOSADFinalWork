@@ -323,7 +323,12 @@ bool GameScene::init()
 	line.addPoint(735, 183);
 	line.addPoint(myXPosition, myYPosition - 300);
 	manager.createMonster("enemy3_0.png",this,line,myProperty(100,50));
-	
+
+	myLine line2;
+	line2.addPoint(0, 189);
+	line2.addPoint(100, 212);
+	line2.addPoint(200, 259);
+	manager.createMonster("enemy1_0.png", this, line2, myProperty(100, 50));
 	schedule(schedule_selector(GameScene::update), 0.1f, kRepeatForever, 0);
 	return true;
 }
