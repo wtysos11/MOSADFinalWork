@@ -70,6 +70,7 @@ bool GameScene::init()
 	totemBullet->setPosition(Vec2(myXPosition + 16, myYPosition - 258));
 	this->addChild(totemBullet, 3);
 
+	/*
 	// 塔位数量
 	towerLandsNum = 12;
 
@@ -108,7 +109,6 @@ bool GameScene::init()
 		towerLands.push_back(towerLand);
 		this->addChild(towerLand, 1);
 	}
-
 	// 塔和对应的子弹，注意各个塔的scale值和位置偏移量如下设置，不要设置其他值（示例）
 	auto tower1 = Sprite::create("tower1.png");
 	tower1->setScale(0.7);
@@ -140,6 +140,9 @@ bool GameScene::init()
 	tower3Bullet->setScale(0.8);
 	tower3Bullet->setPosition(towerLandsPositions[3] + Vec2(-4, 20));
 	this->addChild(tower3Bullet, 3);
+	*/
+	//将空地视为特殊的塔，建塔操作为在空地内部的转换
+	towerManager.createTower("TowerLand.png", TowerProperty(), Vec2(100, 100), this);
 
 	// 返回主菜单按钮
 	auto quitButton = MenuItemImage::create(
@@ -322,20 +325,20 @@ bool GameScene::init()
 	line.addPoint(700, 245);
 	line.addPoint(735, 183);
 	line.addPoint(myXPosition, myYPosition - 300);
-	manager.createMonster("enemy3_0.png",this,line, monsterProperty(100,50));
+	monsterManager.createMonster("enemy3_0.png",this,line, monsterProperty(100,50));
 
 	myLine line2;
 	line2.addPoint(0, 189);
 	line2.addPoint(100, 212);
 	line2.addPoint(200, 259);
-	manager.createMonster("enemy1_0.png", this, line2, monsterProperty(100, 50));
+	monsterManager.createMonster("enemy1_0.png", this, line2, monsterProperty(100, 50));
 	schedule(schedule_selector(GameScene::update), 0.1f, kRepeatForever, 0);
 	return true;
 }
 
 void GameScene::update(float f)
 {
-	manager.updateAll();
+	monsterManager.updateAll();
 }
 
 void GameScene::onMouseMove(EventMouse* event)

@@ -23,7 +23,8 @@ public:
 	void quitCallback(Ref * pSender);
 	void onMouseMove(EventMouse* event);
 private:
-	MonsterManager manager;
+	MonsterManager monsterManager;
+	TowerManager towerManager;
 	Sprite * healthBar;
 	Sprite * enemy1;
 	Sprite * enemy2;
