@@ -26,6 +26,7 @@ public:
 	void addTower1(Object* pSender);
 	void addTower2(Object* pSender);
 	void addTower3(Object* pSender);
+	bool onTouchBegan(Touch *touch, Event* event);
 private:
 	MonsterManager monsterManager;
 	TowerManager towerManager;

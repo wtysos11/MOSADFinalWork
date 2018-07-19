@@ -45,6 +45,32 @@ public:
 			return false;
 		}
 	}
+	float countDistance(Vec2 pos)
+	{
+		return pos.getDistance(tower->getPosition());
+	}
+	int getType()
+	{
+		return type;
+	}
+	void changeType(int type)
+	{
+		this->type = type;
+
+		if (type == 1)
+		{
+			tower->setTexture("tower1.png");
+		}
+		else if (type == 2)
+		{
+			tower->setTexture("tower2.png");
+		}
+		else if (type == 3)
+		{
+			tower->setTexture("tower3.png");
+		}
+	}
+
 };
 
 class TowerManager {
@@ -86,6 +112,34 @@ public:
 				return (*iter);
 			}
 		}
+	}
+
+	//通过遍历所有塔的位置来判断是否点击到了塔，是的话返回true，不然返回false
+	bool clickTower(Vec2 pos)
+	{
+		for (auto iter = tower.begin(); iter != tower.end(); iter++)
+		{
+			if ((*iter).countDistance(pos) < 30)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	Tower getTowerThroughPos(Vec2 pos)
+	{
+		for (auto iter = tower.begin(); iter != tower.end(); iter++)
+		{
+			if ((*iter).countDistance(pos) < 30)
+			{
+				return (*iter);
+			}
+		}
+	}
+	void changeTower(Tower clicking, int changingType)
+	{
+		clicking.changeType(changingType);
+		//clicking.changeSetting();
 	}
 };
 

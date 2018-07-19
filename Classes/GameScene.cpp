@@ -176,8 +176,27 @@ bool GameScene::init()
 	menu->setPosition(Vec2::ZERO);
 	this->addChild(menu, 5);
 	//将空地视为特殊的塔，建塔操作为在空地内部的转换
-	towerManager.createTower("TowerLand.png", TowerProperty(), Vec2(100, 100), this);
+	towerManager.createTower("TowerLand.png", TowerProperty(), Vec2(myXPosition - 530, myYPosition + 165), this);	// 0
+	towerManager.createTower("TowerLand.png", TowerProperty(), Vec2(myXPosition - 210, myYPosition + 150), this);	// 1
+	towerManager.createTower("TowerLand.png", TowerProperty(), Vec2(myXPosition - 10, myYPosition + 230), this);	// 2
 
+	towerManager.createTower("TowerLand.png", TowerProperty(), Vec2(myXPosition + 55, myYPosition + 20), this);	// 3
+	towerManager.createTower("TowerLand.png", TowerProperty(), Vec2(myXPosition + 180, myYPosition - 100), this);	// 4
+
+																				// 左块
+	towerManager.createTower("TowerLand.png", TowerProperty(), Vec2(myXPosition - 260, myYPosition + 10), this);	// 5
+
+																				// 左下块
+	towerManager.createTower("TowerLand.png", TowerProperty(), Vec2(myXPosition - 320, myYPosition - 120), this);	// 6
+	towerManager.createTower("TowerLand.png", TowerProperty(), Vec2(myXPosition - 100, myYPosition - 100), this);	// 7
+	towerManager.createTower("TowerLand.png", TowerProperty(), Vec2(myXPosition - 30, myYPosition - 150), this);	// 8
+
+																				// 右上块
+	towerManager.createTower("TowerLand.png", TowerProperty(), Vec2(myXPosition + 180, myYPosition + 180), this);	// 9
+	towerManager.createTower("TowerLand.png", TowerProperty(), Vec2(myXPosition + 310, myYPosition + 60), this);	// 10
+
+																				// 右下块
+	towerManager.createTower("TowerLand.png", TowerProperty(), Vec2(myXPosition + 390, myYPosition - 95), this);	// 11
 	// 返回主菜单按钮
 	auto quitButton = MenuItemImage::create(
 		"QuitNormal.png",
@@ -366,7 +385,13 @@ bool GameScene::init()
 	line2.addPoint(100, 212);
 	line2.addPoint(200, 259);
 	monsterManager.createMonster("enemy1_0.png", this, line2, monsterProperty(100, 50));
+
+	//调度器
 	schedule(schedule_selector(GameScene::update), 0.1f, kRepeatForever, 0);
+	//事件处理器
+	auto touchListener = EventListenerTouchOneByOne::create();
+	touchListener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, totem);
 	return true;
 }
 
@@ -481,4 +506,23 @@ void GameScene::addTower3(Object* pSender)
 	readyItem->setScale(0.8);
 	readyItem->setPosition(visibleSize.width - 150, 300);
 	this->addChild(readyItem, 15);
+}
+
+bool GameScene::onTouchBegan(Touch *touch, Event* event)
+{
+	bool isClick = false;
+	if (towerManager.clickTower(touch->getLocation()))
+	{
+		isClick = true;
+		Tower clickingTower = towerManager.getTowerThroughPos(touch->getLocation());
+		if (clickingTower.getType() == 0 && clickItemtype!=-1)//点击的是空地且待选项非空
+		{
+			towerManager.changeTower(clickingTower,clickItemtype);
+
+			clickItemtype = -1;
+			readyItem->removeFromParentAndCleanup(true);
+			readyItem = NULL;
+		}
+	}
+	return isClick;
 }
