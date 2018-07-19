@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include "Line.h"
 #include "Monster.h"
+#include "Tower.h"
 USING_NS_CC;
 using std::string;
 

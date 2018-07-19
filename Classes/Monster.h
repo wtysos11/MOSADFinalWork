@@ -4,15 +4,15 @@
 #include "cocos2d.h"
 using std::string;
 using namespace cocos2d;
-struct myProperty {
+struct monsterProperty {
 	int health;
 	float speed;
-	myProperty(int health, float speed)
+	monsterProperty(int health, float speed)
 	{
 		this->health = health;
 		this->speed = speed;
 	}
-	myProperty()
+	monsterProperty()
 	{
 		health = 0;
 		speed = 1.0f;
@@ -22,13 +22,13 @@ struct myProperty {
 class Monster {
 private:
 	//¹ÖÎï
-	myProperty setting;
+	monsterProperty setting;
 	Sprite* monster;
 	myLine line;
 	int type;
 public:
 	bool isActive;
-	Monster(Sprite* monster, myLine line, myProperty setting,int type)
+	Monster(Sprite* monster, myLine line, monsterProperty setting,int type)
 	{
 		this->setting = setting;
 		this->monster = monster;
@@ -69,7 +69,7 @@ private:
 	vector<Monster> storage;
 	int deltaTime;
 public:
-	void createMonster(string picture, Scene* scene, myLine line, myProperty setting)
+	void createMonster(string picture, Scene* scene, myLine line, monsterProperty setting)
 	{
 		Sprite* monster = Sprite::createWithSpriteFrameName(picture);
 
