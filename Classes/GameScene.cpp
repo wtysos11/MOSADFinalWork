@@ -462,6 +462,23 @@ bool GameScene::onTouchBegan(Touch *touch, Event* event)
 			towerMenu->setPosition(clickingTower.getPosition());
 			this->addChild(towerMenu, 20);
 			clickingMenu = true;
+			menuPos = touch->getLocation();
+		}
+		else if (!clickingTower.isGround() && towerMenu != NULL)
+		{
+			towerMenu->removeFromParentAndCleanup(true);
+			auto update = MenuItemImage::create("update.png", "update.png", CC_CALLBACK_1(GameScene::updateTower, this));
+			update->setScale(0.4);
+			update->setPosition(Vec2(-30, 50));
+			auto deleting = MenuItemImage::create("delete.png", "delete.png", CC_CALLBACK_1(GameScene::deleteTower, this));
+			deleting->setScale(0.4);
+			deleting->setPosition(Vec2(30, 50));
+
+			towerMenu = Menu::create(update, deleting, NULL);
+			towerMenu->setPosition(clickingTower.getPosition());
+			this->addChild(towerMenu, 20);
+			clickingMenu = true;
+			menuPos = touch->getLocation();
 		}
 	}
 
@@ -476,9 +493,13 @@ bool GameScene::onTouchBegan(Touch *touch, Event* event)
 
 void GameScene::deleteTower(Object* pSender)
 {
-
+	towerManager.deleteTower(menuPos);
+	towerMenu->removeFromParentAndCleanup(true);
+	towerMenu = NULL;
 }
 void GameScene::updateTower(Object* pSender)
 {
-
+	towerManager.updateTower(menuPos);
+	towerMenu->removeFromParentAndCleanup(true);
+	towerMenu = NULL;
 }

@@ -46,6 +46,7 @@ private:
 
 	//悬浮菜单
 	Menu* towerMenu;
+	Vec2 menuPos = Vec2::ZERO;
 	//点击相关
 	Vec2 prevPos;
 };

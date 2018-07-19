@@ -69,6 +69,10 @@ public:
 		{
 			tower->setTexture("tower3.png");
 		}
+		else if (type == 0)
+		{
+			tower->setTexture("TowerLand.png");
+		}
 	}
 	bool isGround()
 	{
@@ -162,6 +166,28 @@ public:
 			}
 		}
 		//clicking.changeSetting();
+	}
+	void deleteTower(Vec2 pos)
+	{
+		for (auto iter = tower.begin(); iter != tower.end(); iter++)
+		{
+			if ((*iter).countDistance(pos) < 30)
+			{
+				(*iter).changeType(0);
+				break;
+			}
+		}
+	}
+	void updateTower(Vec2 pos)
+	{
+		for (auto iter = tower.begin(); iter != tower.end(); iter++)
+		{
+			if ((*iter).countDistance(pos) < 30)
+			{
+				//(*iter).changeType(0);
+				break;
+			}
+		}
 	}
 };
 
