@@ -51,7 +51,7 @@ public:
 	}
 	int getType()
 	{
-		return type;
+		return this->type;
 	}
 	void changeType(int type)
 	{
@@ -70,7 +70,21 @@ public:
 			tower->setTexture("tower3.png");
 		}
 	}
-
+	bool isGround()
+	{
+		if (type == 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	Vec2 getPosition()
+	{
+		return tower->getPosition();
+	}
 };
 
 class TowerManager {
@@ -136,9 +150,17 @@ public:
 			}
 		}
 	}
-	void changeTower(Tower clicking, int changingType)
+	void changeTower(Vec2 pos, int changingType)
 	{
-		clicking.changeType(changingType);
+		
+		for (auto iter = tower.begin(); iter != tower.end(); iter++)
+		{
+			if ((*iter).countDistance(pos) < 30)
+			{
+				(*iter).changeType(changingType);
+				break;
+			}
+		}
 		//clicking.changeSetting();
 	}
 };

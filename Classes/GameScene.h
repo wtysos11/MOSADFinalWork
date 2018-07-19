@@ -27,6 +27,8 @@ public:
 	void addTower2(Object* pSender);
 	void addTower3(Object* pSender);
 	bool onTouchBegan(Touch *touch, Event* event);
+	void deleteTower(Object* pSender);
+	void updateTower(Object* pSender);
 private:
 	MonsterManager monsterManager;
 	TowerManager towerManager;
@@ -41,4 +43,9 @@ private:
 	//创建塔相关
 	int clickItemtype;//-1为空，其余与塔号看齐
 	Sprite* readyItem;
+
+	//悬浮菜单
+	Menu* towerMenu;
+	//点击相关
+	Vec2 prevPos;
 };

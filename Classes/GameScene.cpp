@@ -148,29 +148,30 @@ bool GameScene::init()
 	this->addChild(chooseBackground, 2);
 
 	readyItem = NULL;
+	towerMenu = NULL;
+	clickItemtype = -1;
+	prevPos = Vec2(0, 0);
+
 	auto tower1 = MenuItemImage::create(
 		"tower1.png", 
 		"tower1.png", 
 		CC_CALLBACK_1(GameScene::addTower1, this));
 	tower1->setScale(0.7);
-	tower1->setAnchorPoint(Vec2(0, 0));
-	tower1->setPosition(Vec2(visibleSize.width - 150, 100));
+	tower1->setPosition(Vec2(visibleSize.width - 100, 150));
 
 	auto tower2 = MenuItemImage::create(
 		"tower2.png",
 		"tower2.png",
 		CC_CALLBACK_1(GameScene::addTower2, this));
 	tower2->setScale(0.8);
-	tower2->setAnchorPoint(Vec2(0, 0));
-	tower2->setPosition(Vec2(visibleSize.width - 150, 200));
+	tower2->setPosition(Vec2(visibleSize.width - 100, 250));
 
 	auto tower3 = MenuItemImage::create(
 		"tower3.png",
 		"tower3.png",
 		CC_CALLBACK_1(GameScene::addTower3, this));
 	tower3->setScale(0.8);
-	tower3->setAnchorPoint(Vec2(0, 0));
-	tower3->setPosition(Vec2(visibleSize.width - 150, 300));
+	tower3->setPosition(Vec2(visibleSize.width - 100, 330));
 
 	auto menu = Menu::create(tower1, tower2, tower3, NULL);
 	menu->setPosition(Vec2::ZERO);
@@ -261,110 +262,6 @@ bool GameScene::init()
 	walkMenu->setPosition(Vec2::ZERO);
 	this->addChild(walkMenu, 10);
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-	
-	//线路1，开头为左侧8点钟方向，主干
-	auto checkpointa1 = Sprite::create("OneNormal.png");
-	checkpointa1->setPosition(0, 189);
-	this->addChild(checkpointa1, 2);
-
-	auto checkpointa2 = Sprite::create("OneNormal.png");
-	checkpointa2->setPosition(100, 212);
-	this->addChild(checkpointa2, 2);
-
-	auto checkpointa3 = Sprite::create("OneNormal.png");
-	checkpointa3->setPosition(200, 259);
-	this->addChild(checkpointa3, 2);
-
-	auto checkpointa3a = Sprite::create("OneNormal.png");
-	checkpointa3a->setPosition(243, 277);
-	this->addChild(checkpointa3a, 2);
-
-	auto checkpointa4 = Sprite::create("OneNormal.png");
-	checkpointa4->setPosition(300, 300);
-	this->addChild(checkpointa4, 2);
-
-	auto checkpointa4a = Sprite::create("OneNormal.png");
-	checkpointa4a->setPosition(374, 308);
-	this->addChild(checkpointa4a, 2);
-
-	auto checkpointa5 = Sprite::create("OneNormal.png");
-	checkpointa5->setPosition(400, 300);
-	this->addChild(checkpointa5, 2);
-
-	auto checkpointa6 = Sprite::create("OneNormal.png");
-	checkpointa6->setPosition(500, 339);
-	this->addChild(checkpointa6, 2);
-
-	auto checkpointa7 = Sprite::create("OneNormal.png");
-	checkpointa7->setPosition(600, 318);
-	this->addChild(checkpointa7, 2);
-	
-	auto checkpointa8 = Sprite::create("OneNormal.png");
-	checkpointa8->setPosition(700, 245);
-	this->addChild(checkpointa8, 2);
-
-	auto checkpointa9 = Sprite::create("OneNormal.png");
-	checkpointa9->setPosition(735, 183);
-	this->addChild(checkpointa9, 2);
-
-	//线路2，左侧10点钟方向，与线路1合并后结束
-	auto checkpointb1 = Sprite::create("OneNormal.png");
-	checkpointb1->setPosition(0, 493);
-	this->addChild(checkpointb1, 2);
-
-	auto checkpointb2 = Sprite::create("OneNormal.png");
-	checkpointb2->setPosition(100, 441);
-	this->addChild(checkpointb2, 2);
-
-	auto checkpointb3 = Sprite::create("OneNormal.png");
-	checkpointb3->setPosition(200, 450);
-	this->addChild(checkpointb3, 2);
-
-	auto checkpointb4 = Sprite::create("OneNormal.png");
-	checkpointb4->setPosition(300, 460);
-	this->addChild(checkpointb4, 2);
-
-	auto checkpointb5 = Sprite::create("OneNormal.png");
-	checkpointb5->setPosition(400, 432);
-	this->addChild(checkpointb5, 2);
-
-	//线路3，12点钟
-	auto checkpointc1 = Sprite::create("OneNormal.png");
-	checkpointc1->setPosition(757, 698);
-	this->addChild(checkpointc1, 2);
-
-	auto checkpointc2 = Sprite::create("OneNormal.png");
-	checkpointc2->setPosition(732, 619);
-	this->addChild(checkpointc2, 2);
-
-	auto checkpointc3 = Sprite::create("OneNormal.png");
-	checkpointc3->setPosition(737, 495);
-	this->addChild(checkpointc3, 2);
-
-	auto checkpointc4 = Sprite::create("OneNormal.png");
-	checkpointc4->setPosition(801, 409);
-	this->addChild(checkpointc4, 2);
-
-	auto checkpointc5 = Sprite::create("OneNormal.png");
-	checkpointc5->setPosition(916, 303);
-	this->addChild(checkpointc5, 2);
-
-	auto checkpointc6 = Sprite::create("OneNormal.png");
-	checkpointc6->setPosition(916, 199);
-	this->addChild(checkpointc6, 2);
-
-	//线路4,3点钟方向
-	auto checkpointd1 = Sprite::create("OneNormal.png");
-	checkpointd1->setPosition(1244, 413);
-	this->addChild(checkpointd1, 2);
-
-	auto checkpointd2 = Sprite::create("OneNormal.png");
-	checkpointd2->setPosition(1077, 396);
-	this->addChild(checkpointd2, 2);
-	
-	
 	myLine line1;
 	line1.addPoint(0, 189);
 	line1.addPoint(100, 212);
@@ -426,7 +323,7 @@ void GameScene::update(float f)
 void GameScene::onMouseMove(EventMouse* event)
 {
 	Vec2 x = event->getLocationInView();
-	CCLOG("%f,%f", x.x,x.y);
+	//CCLOG("%f,%f", x.x,x.y);
 	if (readyItem != NULL)
 	{
 		readyItem->setPosition(x.x, x.y);
@@ -499,7 +396,7 @@ void GameScene::addTower1(Object* pSender)
 	clickItemtype = 1;
 	readyItem = Sprite::create("tower1.png");
 	readyItem->setScale(0.7);
-	readyItem->setPosition(visibleSize.width - 150, 100);
+	readyItem->setPosition(visibleSize.width - 100, 150);
 	this->addChild(readyItem,15);
 }
 void GameScene::addTower2(Object* pSender)
@@ -513,7 +410,7 @@ void GameScene::addTower2(Object* pSender)
 	clickItemtype = 2;
 	readyItem = Sprite::create("tower2.png");
 	readyItem->setScale(0.8);
-	readyItem->setPosition(visibleSize.width - 150, 200);
+	readyItem->setPosition(visibleSize.width - 100, 250);
 	this->addChild(readyItem, 15);
 }
 void GameScene::addTower3(Object* pSender)
@@ -527,25 +424,61 @@ void GameScene::addTower3(Object* pSender)
 	clickItemtype = 3;
 	readyItem = Sprite::create("tower3.png");
 	readyItem->setScale(0.8);
-	readyItem->setPosition(visibleSize.width - 150, 300);
+	readyItem->setPosition(visibleSize.width - 100, 330);
 	this->addChild(readyItem, 15);
 }
 
 bool GameScene::onTouchBegan(Touch *touch, Event* event)
 {
+	CCLOG("%f,%f", touch->getLocation().x, touch->getLocation().y);
+	if (prevPos.getDistance(touch->getLocation()) < 1)
+	{
+		return false;
+	}
 	bool isClick = false;
+	bool clickingMenu = false;
 	if (towerManager.clickTower(touch->getLocation()))
 	{
 		isClick = true;
 		Tower clickingTower = towerManager.getTowerThroughPos(touch->getLocation());
-		if (clickingTower.getType() == 0 && clickItemtype!=-1)//点击的是空地且待选项非空
+		if (clickingTower.isGround() && clickItemtype!=-1)//点击的是空地且待选项非空
 		{
-			towerManager.changeTower(clickingTower,clickItemtype);
+			towerManager.changeTower(touch->getLocation(),clickItemtype);
 
 			clickItemtype = -1;
 			readyItem->removeFromParentAndCleanup(true);
 			readyItem = NULL;
 		}
+		else if (!clickingTower.isGround()&&towerMenu==NULL) //展开菜单
+		{
+			auto update = MenuItemImage::create("update.png", "update.png", CC_CALLBACK_1(GameScene::updateTower, this));
+			update->setScale(0.4);
+			update->setPosition(Vec2(-30, 50));
+			auto deleting = MenuItemImage::create("delete.png", "delete.png", CC_CALLBACK_1(GameScene::deleteTower, this));
+			deleting->setScale(0.4);
+			deleting->setPosition(Vec2(30, 50));
+
+			towerMenu = Menu::create(update,deleting, NULL);
+			towerMenu->setPosition(clickingTower.getPosition());
+			this->addChild(towerMenu, 20);
+			clickingMenu = true;
+		}
 	}
+
+	if (!clickingMenu && towerMenu!=NULL)//点击除了菜单外的任何地方都会导致菜单回缩
+	{
+		towerMenu->removeFromParentAndCleanup(true);
+		towerMenu = NULL;
+	}
+	prevPos = touch->getLocation();
 	return isClick;
+}
+
+void GameScene::deleteTower(Object* pSender)
+{
+
+}
+void GameScene::updateTower(Object* pSender)
+{
+
 }
