@@ -365,26 +365,49 @@ bool GameScene::init()
 	this->addChild(checkpointd2, 2);
 	
 	
-	myLine line;/*
-	line.addPoint(0, 189);
-	line.addPoint(100, 212);
-	line.addPoint(200, 259);
-	line.addPoint(243, 277);
-	line.addPoint(300, 300);
-	line.addPoint(374, 308);
-	line.addPoint(400, 300);
-	line.addPoint(500, 339);
-	line.addPoint(600, 318);*/
-	line.addPoint(700, 245);
-	line.addPoint(735, 183);
-	line.addPoint(myXPosition, myYPosition - 300);
-	monsterManager.createMonster("enemy3_0.png",this,line, monsterProperty(100,50));
-
+	myLine line1;
+	line1.addPoint(0, 189);
+	line1.addPoint(100, 212);
+	line1.addPoint(200, 259);
+	line1.addPoint(243, 277);
+	line1.addPoint(300, 300);
+	line1.addPoint(374, 308);
+	line1.addPoint(400, 300);
+	line1.addPoint(500, 339);
+	line1.addPoint(600, 318);
+	line1.addPoint(700, 245);
+	line1.addPoint(735, 183);
+	line1.addPoint(myXPosition, myYPosition - 300);
 	myLine line2;
-	line2.addPoint(0, 189);
-	line2.addPoint(100, 212);
-	line2.addPoint(200, 259);
-	monsterManager.createMonster("enemy1_0.png", this, line2, monsterProperty(100, 50));
+	line2.addPoint(0, 493);
+	line2.addPoint(100, 441);
+	line2.addPoint(200, 450);
+	line2.addPoint(300, 460);
+	line2.addPoint(400, 432);
+	line2.addPoint(500, 339);
+	line2.addPoint(600, 318);
+	line2.addPoint(700, 245);
+	line2.addPoint(735, 183);
+	line2.addPoint(myXPosition, myYPosition - 300);
+	myLine line3;
+	line3.addPoint(757, 698);
+	line3.addPoint(732, 619);
+	line3.addPoint(737, 495);
+	line3.addPoint(801, 409);
+	line3.addPoint(916, 303);
+	line3.addPoint(916, 199);
+	line3.addPoint(735, 183);
+	line3.addPoint(myXPosition, myYPosition - 300);
+	myLine line4;
+	line4.addPoint(1244, 443);
+	line4.addPoint(1077, 436);
+	line4.addPoint(916, 303);
+	line4.addPoint(916, 199);
+	line4.addPoint(735, 183);
+	line4.addPoint(myXPosition, myYPosition - 300);
+
+	monsterManager.createMonster("enemy3_0.png",this, line3, monsterProperty(100,50));
+	monsterManager.createMonster("enemy1_0.png", this, line4, monsterProperty(100, 50));
 
 	//µ÷¶ÈÆ÷
 	schedule(schedule_selector(GameScene::update), 0.1f, kRepeatForever, 0);

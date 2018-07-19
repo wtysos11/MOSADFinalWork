@@ -72,6 +72,7 @@ public:
 	void createMonster(string picture, Scene* scene, myLine line, monsterProperty setting)
 	{
 		Sprite* monster = Sprite::createWithSpriteFrameName(picture);
+		monster->setScale(0.8);
 
 		Vec2 point = line.getPoint();
 		line.nextPoint();//第一个点为起始点，第二个点开始为目标点
