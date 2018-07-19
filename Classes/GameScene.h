@@ -22,6 +22,10 @@ public:
 	void walkMenuCallback(Ref * pSender);
 	void quitCallback(Ref * pSender);
 	void onMouseMove(EventMouse* event);
+
+	void addTower1(Object* pSender);
+	void addTower2(Object* pSender);
+	void addTower3(Object* pSender);
 private:
 	MonsterManager monsterManager;
 	TowerManager towerManager;
@@ -32,4 +36,8 @@ private:
 	int towerLandsNum;
 	std::vector<Sprite*> towerLands;
 	std::vector<Vec2> towerLandsPositions;
+
+	//创建塔相关
+	int clickItemtype;//-1为空，其余与塔号看齐
+	Sprite* readyItem;
 };

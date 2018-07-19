@@ -141,6 +141,40 @@ bool GameScene::init()
 	tower3Bullet->setPosition(towerLandsPositions[3] + Vec2(-4, 20));
 	this->addChild(tower3Bullet, 3);
 	*/
+	//塔选择菜单
+	Sprite* chooseBackground = Sprite::create("label.jpg");
+	chooseBackground->setAnchorPoint(Vec2(0, 0));
+	chooseBackground->setPosition(Vec2(visibleSize.width-150, -200));
+	this->addChild(chooseBackground, 2);
+
+	readyItem = NULL;
+	auto tower1 = MenuItemImage::create(
+		"tower1.png", 
+		"tower1.png", 
+		CC_CALLBACK_1(GameScene::addTower1, this));
+	tower1->setScale(0.7);
+	tower1->setAnchorPoint(Vec2(0, 0));
+	tower1->setPosition(Vec2(visibleSize.width - 150, 100));
+
+	auto tower2 = MenuItemImage::create(
+		"tower2.png",
+		"tower2.png",
+		CC_CALLBACK_1(GameScene::addTower2, this));
+	tower2->setScale(0.8);
+	tower2->setAnchorPoint(Vec2(0, 0));
+	tower2->setPosition(Vec2(visibleSize.width - 150, 200));
+
+	auto tower3 = MenuItemImage::create(
+		"tower3.png",
+		"tower3.png",
+		CC_CALLBACK_1(GameScene::addTower3, this));
+	tower3->setScale(0.8);
+	tower3->setAnchorPoint(Vec2(0, 0));
+	tower3->setPosition(Vec2(visibleSize.width - 150, 300));
+
+	auto menu = Menu::create(tower1, tower2, tower3, NULL);
+	menu->setPosition(Vec2::ZERO);
+	this->addChild(menu, 5);
 	//将空地视为特殊的塔，建塔操作为在空地内部的转换
 	towerManager.createTower("TowerLand.png", TowerProperty(), Vec2(100, 100), this);
 
@@ -345,7 +379,10 @@ void GameScene::onMouseMove(EventMouse* event)
 {
 	Vec2 x = event->getLocationInView();
 	CCLOG("%f,%f", x.x,x.y);
-
+	if (readyItem != NULL)
+	{
+		readyItem->setPosition(x.x, x.y);
+	}
 	x = event->getLocation();
 	x = event->getLocationInView();
 	x = event->getPreviousLocation();
@@ -400,4 +437,48 @@ void GameScene::walkMenuCallback(Ref* pSender) {
 void GameScene::quitCallback(Ref* pSender) {
 	auto newScene = MenuScene::createScene();
 	Director::getInstance()->replaceScene(CCTransitionFade::create(0.5, newScene));
+}
+
+
+void GameScene::addTower1(Object* pSender)
+{
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	if (readyItem != NULL)
+	{
+		readyItem->removeFromParentAndCleanup(true);
+		readyItem = NULL;
+	}
+	clickItemtype = 1;
+	readyItem = Sprite::create("tower1.png");
+	readyItem->setScale(0.7);
+	readyItem->setPosition(visibleSize.width - 150, 100);
+	this->addChild(readyItem,15);
+}
+void GameScene::addTower2(Object* pSender)
+{
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	if (readyItem != NULL)
+	{
+		readyItem->removeFromParentAndCleanup(true);
+		readyItem = NULL;
+	}
+	clickItemtype = 2;
+	readyItem = Sprite::create("tower2.png");
+	readyItem->setScale(0.8);
+	readyItem->setPosition(visibleSize.width - 150, 200);
+	this->addChild(readyItem, 15);
+}
+void GameScene::addTower3(Object* pSender)
+{
+	Size visibleSize = Director::getInstance()->getVisibleSize();
+	if (readyItem != NULL)
+	{
+		readyItem->removeFromParentAndCleanup(true);
+		readyItem = NULL;
+	}
+	clickItemtype = 3;
+	readyItem = Sprite::create("tower3.png");
+	readyItem->setScale(0.8);
+	readyItem->setPosition(visibleSize.width - 150, 300);
+	this->addChild(readyItem, 15);
 }
