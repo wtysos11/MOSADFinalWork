@@ -55,4 +55,5 @@ private:
 
 	//×Óµ¯
 	std::vector<Sprite*> bullets;
+	bool judgingBullets = false;
 };

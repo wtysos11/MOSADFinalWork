@@ -512,6 +512,9 @@ void GameScene::updateTower(Object* pSender)
 //发射子弹
 void GameScene::bullet(float f)
 {
+	while (judgingBullets)//正在判断碰撞的时候延迟发射子弹（互斥锁）
+	{
+	}
 	vector<Tower> tower = towerManager.getTowers();
 	Sprite* Smonster;
 	Sprite* Stower;
@@ -569,17 +572,24 @@ void GameScene::bullet(float f)
 void GameScene::hitByBullet()
 {
 	Sprite* Smonster;
+	judgingBullets = true;
 	for (auto iter1 = monsterManager.storage.begin(); iter1 != monsterManager.storage.end(); iter1++)
 	{
 		Smonster = (Sprite*)(*iter1).getSprite();
-		for (auto iter2 = bullets.begin(); iter2 != bullets.end(); iter2++)
+		for (auto iter2 = bullets.begin(); iter2 != bullets.end(); )
 		{
 			if (Smonster->getBoundingBox().containsPoint((*iter2)->getPosition()))
 			{
 				//到时候这里添加血条减少的操作
 				monsterManager.monsterAnimate((*iter1), "dead");
+				iter2 = bullets.erase(iter2);
+			}
+			else
+			{
+				iter2++;
 			}
 		}
 	}
+	judgingBullets = false;
 
 }
