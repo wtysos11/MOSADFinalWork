@@ -7,15 +7,18 @@ using namespace cocos2d;
 struct monsterProperty {
 	int health;
 	float speed;
+	int maxHealth;
 	monsterProperty(int health, float speed)
 	{
 		this->health = health;
 		this->speed = speed;
+		this->maxHealth = health;
 	}
 	monsterProperty()
 	{
 		health = 100;
 		speed = 1.0f;
+		this->maxHealth = health;
 	}
 };
 
@@ -24,16 +27,19 @@ private:
 	//怪物
 	monsterProperty setting;
 	Sprite* monster;
+	ProgressTimer* healthBar;
 	myLine line;
 	int type;
 public:
+
 	bool isActive;
-	Monster(Sprite* monster, myLine line, monsterProperty setting,int type)
+	Monster(Sprite* monster, ProgressTimer* healthBar, myLine line, monsterProperty setting,int type)
 	{
 		this->setting = setting;
 		this->monster = monster;
 		this->line = line;
 		this->type = type;
+		this->healthBar = healthBar;
 		isActive = true;
 	}
 	//当到达终点时返回false
@@ -52,6 +58,7 @@ public:
 
 		float dist = setting.speed*delta;
 		monster->runAction(MoveBy::create(delta, Vec2(dist*aim.x, dist*aim.y)));
+		healthBar->setPosition(origin.x+aim.x*dist, origin.y+dist*aim.y+40);
 		return true;
 	}
 	int getType()
@@ -62,11 +69,19 @@ public:
 	{
 		return monster;
 	}
+	ProgressTimer* getHealthBar()
+	{
+		return healthBar;
+	}
 	//被攻击，如果被击杀，返回true，不然返回false
 	bool beingAttacked(int attack)
 	{
 		setting.health -= attack;
 		if (setting.health < 0)
+			setting.health = 0;
+		float ans = (float)setting.health / setting.maxHealth * 100;
+		healthBar->setPercentage(ans);
+		if (setting.health <= 0)
 		{
 			return true;
 		}
@@ -130,7 +145,16 @@ public:
 			type = 3;
 		}
 
-		storage.push_back(Monster(monster, line, setting,type));
+		auto sp = Sprite::create("healthBar.png");
+		auto healthBar = ProgressTimer::create(sp);
+		healthBar->setType(ProgressTimerType::BAR);
+		healthBar->setBarChangeRate(Point(1, 0));
+		healthBar->setMidpoint(Point(0, 0));
+		healthBar->setPercentage(100);
+		healthBar->setPosition(Vec2(point.x, point.y + 40));
+		scene->addChild(healthBar, 20);
+
+		storage.push_back(Monster(monster, healthBar,line, setting,type));
 	}
 	void updateAll()
 	{
@@ -167,6 +191,7 @@ public:
 			return;
 
 		Sprite* enemy = monster.getSprite();
+		auto healthBar = monster.getHealthBar();
 		if (behaviour == "dead")
 		{
 			monster.isActive = false;
@@ -174,24 +199,27 @@ public:
 			{
 				enemy->stopAllActions();
 				Animate* enemy1DeadAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy1DeadAnimation"));
-				enemy->runAction(Sequence::create(enemy1DeadAnimation, CCDelayTime::create(1), CallFunc::create([enemy]() {
-					enemy->removeFromParentAndCleanup(false);
+				enemy->runAction(Sequence::create(enemy1DeadAnimation, CCDelayTime::create(1), CallFunc::create([enemy, healthBar]() {
+					enemy->removeFromParentAndCleanup(true);
+					healthBar->removeFromParentAndCleanup(true);
 				}), nullptr));
 			}
 			else if (monster.getType() == 2)
 			{
 				enemy->stopAllActions();
 				Animate* enemy2DeadAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy2DeadAnimation"));
-				enemy->runAction(Sequence::create(enemy2DeadAnimation, CCDelayTime::create(1), CallFunc::create([enemy]() {
-					enemy->removeFromParentAndCleanup(false);
+				enemy->runAction(Sequence::create(enemy2DeadAnimation, CCDelayTime::create(1), CallFunc::create([enemy, healthBar]() {
+					enemy->removeFromParentAndCleanup(true);
+					healthBar->removeFromParentAndCleanup(true);
 				}), nullptr));
 			}
 			else if (monster.getType() == 3)
 			{
 				enemy->stopAllActions();
 				Animate* enemy3DeadAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy3DeadAnimation")); 
-				enemy->runAction(Sequence::create(enemy3DeadAnimation, CCDelayTime::create(1), CallFunc::create([enemy]() {
-					enemy->removeFromParentAndCleanup(false);
+				enemy->runAction(Sequence::create(enemy3DeadAnimation, CCDelayTime::create(1), CallFunc::create([enemy, healthBar]() {
+					enemy->removeFromParentAndCleanup(true);
+					healthBar->removeFromParentAndCleanup(true);
 				}), nullptr));
 			}
 		}

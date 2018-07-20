@@ -76,7 +76,7 @@ bool GameScene::init()
 	totem->setPosition(Vec2(myXPosition, myYPosition - 300));
 	this->addChild(totem, 2);
 	*/
-	towerManager.createTower("Totem.png", TowerProperty(100, 300, 800,20), Vec2(myXPosition, myYPosition - 300),this);
+	towerManager.createTower("Totem.png", TowerProperty(50, 300, 800,20), Vec2(myXPosition, myYPosition - 300),this);
 
 	// Í¼ÌÚ×Óµ¯
 		/*
@@ -380,7 +380,7 @@ void GameScene::update(float f)
 void GameScene::onMouseMove(EventMouse* event)
 {
 	Vec2 x = event->getLocationInView();
-	//CCLOG("%f,%f", x.x,x.y);
+	CCLOG("%f,%f", x.x,x.y);
 	if (readyItem != NULL && !isQuit)
 	{
 		readyItem->setPosition(x.x, x.y);
