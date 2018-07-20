@@ -305,6 +305,8 @@ bool GameScene::init()
 	line4.addPoint(myXPosition, myYPosition - 300);
 
 	monsterManager.createMonster("enemy3_0.png",this, line3, monsterProperty(100,50));
+	monsterManager.createMonster("enemy3_0.png", this, line3, monsterProperty(100, 50));
+	monsterManager.createMonster("enemy3_0.png", this, line3, monsterProperty(100, 50));
 	monsterManager.createMonster("enemy1_0.png", this, line4, monsterProperty(100, 50));
 
 	//调度器
@@ -512,9 +514,7 @@ void GameScene::updateTower(Object* pSender)
 //发射子弹
 void GameScene::bullet(float f)
 {
-	while (judgingBullets)//正在判断碰撞的时候延迟发射子弹（互斥锁）
-	{
-	}
+
 	vector<Tower> tower = towerManager.getTowers();
 	Sprite* Smonster;
 	Sprite* Stower;
@@ -558,8 +558,13 @@ void GameScene::bullet(float f)
 				towerBullet->setPosition(Stower->getPosition() + Vec2(offsetx, offsety));
 				auto time = Smonster->getPosition().getDistance(Stower->getPosition()) / (*iter).getTowerProperty().speed;
 
-				towerBullet->runAction(Sequence::create(MoveTo::create(time, Vec2(Smonster->getPosition())), FadeOut::create(0.5), nullptr));
+				towerBullet->runAction(Sequence::create(MoveTo::create(time, Vec2(Smonster->getPosition())), FadeOut::create(time), nullptr));
+
+				while (judgingBullets)//正在判断碰撞的时候延迟发射子弹（互斥锁）
+				{
+				}
 				bullets.push_back(towerBullet);
+				bulletAttack.push_back((*iter).getAttack());
 				this->addChild(towerBullet, 11);
 				break;
 			}
@@ -576,17 +581,28 @@ void GameScene::hitByBullet()
 	for (auto iter1 = monsterManager.storage.begin(); iter1 != monsterManager.storage.end(); iter1++)
 	{
 		Smonster = (Sprite*)(*iter1).getSprite();
+
+		auto iter3 = bulletAttack.begin();
 		for (auto iter2 = bullets.begin(); iter2 != bullets.end(); )
 		{
-			if (Smonster->getBoundingBox().containsPoint((*iter2)->getPosition()))
+			if (Smonster->getBoundingBox().containsPoint((*iter2)->getPosition()))//爆炸，删除子弹
 			{
 				//到时候这里添加血条减少的操作
-				monsterManager.monsterAnimate((*iter1), "dead");
+
+				//被击杀
+				if ((*iter1).beingAttacked(*iter3))
+				{
+					monsterManager.monsterAnimate((*iter1), "dead");
+				}
+				(*iter2)->removeFromParentAndCleanup(true);
+
 				iter2 = bullets.erase(iter2);
+				iter3 = bulletAttack.erase(iter3);
 			}
 			else
 			{
 				iter2++;
+				iter3++;
 			}
 		}
 	}

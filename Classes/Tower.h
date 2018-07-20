@@ -15,8 +15,8 @@ struct TowerProperty {
 	}
 	TowerProperty()
 	{
-		attack = 0;
-		speed = 200.0f;
+		attack = 50;
+		speed = 15.0f;
 		range = 300.0f;
 	}
 };
@@ -97,6 +97,10 @@ public:
 	Vec2 getPosition()
 	{
 		return tower->getPosition();
+	}
+	int getAttack()
+	{
+		return setting.attack;
 	}
 };
 

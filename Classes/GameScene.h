@@ -55,5 +55,6 @@ private:
 
 	//×Óµ¯
 	std::vector<Sprite*> bullets;
+	std::vector<int> bulletAttack;
 	bool judgingBullets = false;
 };

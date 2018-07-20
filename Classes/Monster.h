@@ -14,7 +14,7 @@ struct monsterProperty {
 	}
 	monsterProperty()
 	{
-		health = 0;
+		health = 100;
 		speed = 1.0f;
 	}
 };
@@ -61,6 +61,19 @@ public:
 	Sprite* getSprite()
 	{
 		return monster;
+	}
+	//被攻击，如果被击杀，返回true，不然返回false
+	bool beingAttacked(int attack)
+	{
+		setting.health -= attack;
+		if (setting.health < 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 };
 
