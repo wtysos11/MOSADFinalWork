@@ -70,7 +70,7 @@ private:
 	cocos2d::Vector<SpriteFrame*> explore;
 
 	//½ðÇ®
-	int money;
+	int money = 400;
 	Label* rateNum;
 	Label* moneyNum;
 };

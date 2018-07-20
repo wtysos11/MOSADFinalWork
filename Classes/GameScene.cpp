@@ -290,7 +290,7 @@ bool GameScene::init()
 	rateNum->setColor(Color3B(255, 255, 255));
 	rateNum->setPosition(visibleSize.width - 150, visibleSize.height - 50);
 	this->addChild(rateNum, 3);
-	moneyNum = Label::createWithTTF("Money: 0", "fonts/arial.TTF", 40);
+	moneyNum = Label::createWithTTF("Money: 400", "fonts/arial.TTF", 40);
 	moneyNum->setColor(Color3B(255, 255, 255));
 	moneyNum->setPosition(visibleSize.width - 165, visibleSize.height - 100);
 	this->addChild(moneyNum, 3);
@@ -465,15 +465,25 @@ bool GameScene::onTouchBegan(Touch *touch, Event* event)
 	{
 		isClick = true;
 		Tower clickingTower = towerManager.getTowerThroughPos(touch->getLocation());
-		if (clickingTower.isGround() && clickItemtype!=-1)//点击的是空地且待选项非空
+		if (clickingTower.getType() == 4)//点击图腾
 		{
-			towerManager.changeTower(touch->getLocation(),clickItemtype);
+			if (towerMenu != NULL)
+			{
+				towerMenu->removeFromParentAndCleanup(true);
+				towerMenu = NULL;
+			}
+			return false;
+
+		}
+		else if (clickingTower.isGround() && clickItemtype != -1)//点击的是空地且待选项非空
+		{
+			towerManager.changeTower(touch->getLocation(), clickItemtype);
 
 			clickItemtype = -1;
 			readyItem->removeFromParentAndCleanup(true);
 			readyItem = NULL;
 		}
-		else if (!clickingTower.isGround()&&towerMenu==NULL) //展开菜单
+		else if (!clickingTower.isGround() && towerMenu == NULL) //展开菜单
 		{
 			auto update = MenuItemImage::create("update.png", "update.png", CC_CALLBACK_1(GameScene::updateTower, this));
 			update->setScale(0.4);
@@ -482,7 +492,7 @@ bool GameScene::onTouchBegan(Touch *touch, Event* event)
 			deleting->setScale(0.4);
 			deleting->setPosition(Vec2(30, 50));
 
-			towerMenu = Menu::create(update,deleting, NULL);
+			towerMenu = Menu::create(update, deleting, NULL);
 			towerMenu->setPosition(clickingTower.getPosition());
 			this->addChild(towerMenu, 20);
 			clickingMenu = true;
@@ -506,7 +516,7 @@ bool GameScene::onTouchBegan(Touch *touch, Event* event)
 		}
 	}
 
-	if (!clickingMenu && towerMenu!=NULL)//点击除了菜单外的任何地方都会导致菜单回缩
+	if (!clickingMenu && towerMenu != NULL)//点击除了菜单外的任何地方都会导致菜单回缩
 	{
 		towerMenu->removeFromParentAndCleanup(true);
 		towerMenu = NULL;
@@ -634,6 +644,7 @@ void GameScene::hitByBullet()
 				if ((*iter1).beingAttacked(*iter3))
 				{
 					monsterManager.monsterAnimate((*iter1), "dead");
+					modifyMoney(0);
 				}
 				;
 
