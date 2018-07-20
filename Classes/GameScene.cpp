@@ -311,7 +311,7 @@ bool GameScene::init()
 
 	//调度器
 	schedule(schedule_selector(GameScene::update), 0.1f, kRepeatForever, 0);
-	schedule(schedule_selector(GameScene::bullet), 1.5f, kRepeatForever, 0);
+	schedule(schedule_selector(GameScene::bullet), 0.1f, kRepeatForever, 0);
 	//事件处理器
 	auto touchListener = EventListenerTouchOneByOne::create();
 	touchListener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
@@ -514,15 +514,20 @@ void GameScene::updateTower(Object* pSender)
 //发射子弹
 void GameScene::bullet(float f)
 {
-
-	vector<Tower> tower = towerManager.getTowers();
 	Sprite* Smonster;
 	Sprite* Stower;
-	for (auto iter = tower.begin(); iter != tower.end(); iter++)
+	for (auto iter = towerManager.tower.begin(); iter != towerManager.tower.end(); iter++)
 	{
 		Stower = (Sprite*)(*iter).getTower();
 		if ((*iter).getType() == 0)
 			continue;
+
+		(*iter).counting();
+		if (!(*iter).isFire())
+		{
+			continue;
+		}
+
 		for (auto iter1 = monsterManager.storage.begin(); iter1 != monsterManager.storage.end(); iter1++)
 		{
 			Smonster = (Sprite*)(*iter1).getSprite();

@@ -7,6 +7,7 @@ struct TowerProperty {
 	int attack;
 	float speed;
 	float range;
+	int delta;
 	TowerProperty(int attack, float speed,int range)
 	{
 		this->attack = attack;
@@ -16,8 +17,9 @@ struct TowerProperty {
 	TowerProperty()
 	{
 		attack = 50;
-		speed = 15.0f;
+		speed = 200.0f;
 		range = 300.0f;
+		delta = 15;
 	}
 };
 
@@ -27,12 +29,14 @@ private:
 	TowerProperty setting;
 	Sprite* tower;
 	int type;
+	int count;
 public:
 	Tower(TowerProperty setting, Sprite* t, int type)
 	{
 		this->setting = setting;
 		tower = t;
 		this->type = type;
+		count = 0;
 	}
 	bool isTower(Sprite* t)
 	{
@@ -102,12 +106,27 @@ public:
 	{
 		return setting.attack;
 	}
+	void counting()
+	{
+		count++;
+	}
+	bool isFire()
+	{
+		if (count >= setting.delta)
+		{
+			count -= setting.delta;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 };
 
 class TowerManager {
-private:
-	vector<Tower> tower;
 public:
+	vector<Tower> tower;
 	void createTower(string picture,TowerProperty setting,Vec2 pos,Scene* scene)
 	{
 		int type = -1;
@@ -132,10 +151,6 @@ public:
 		sp->setScale(MY_SCALE_SIZE);
 		scene->addChild(sp, 10);
 		tower.push_back(Tower(setting, sp, type));
-	}
-	vector<Tower> getTowers()
-	{
-		return tower;
 	}
 
 	//根据精灵指针寻找对应的对象
