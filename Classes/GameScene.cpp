@@ -513,7 +513,6 @@ void GameScene::updateTower(Object* pSender)
 void GameScene::bullet(float f)
 {
 	vector<Tower> tower = towerManager.getTowers();
-	vector<Monster> monster = monsterManager.getMonsters();
 	Sprite* Smonster;
 	Sprite* Stower;
 	for (auto iter = tower.begin(); iter != tower.end(); iter++)
@@ -521,11 +520,12 @@ void GameScene::bullet(float f)
 		Stower = (Sprite*)(*iter).getTower();
 		if ((*iter).getType() == 0)
 			continue;
-		for (auto iter1 = monster.begin(); iter1 != monster.end(); iter1++)
+		for (auto iter1 = monsterManager.storage.begin(); iter1 != monsterManager.storage.end(); iter1++)
 		{
 			Smonster = (Sprite*)(*iter1).getSprite();
 			//判断怪物与塔的距离，如果小于塔的射程，那么发射子弹
-			if (sqrt(pow(Smonster->getPosition().x - Stower->getPosition().x, 2) + pow(Smonster->getPosition().y - Stower->getPosition().y, 2))<(*iter).getTowerProperty().range)//
+			//if (sqrt(pow(Smonster->getPosition().x - Stower->getPosition().x, 2) + pow(Smonster->getPosition().y - Stower->getPosition().y, 2))<(*iter).getTowerProperty().range)
+			if(Smonster->getPosition().getDistance(Stower->getPosition())<(*iter).getTowerProperty().range)
 			{
 				string picture = "";
 				float offsetx, offsety, scale;
@@ -553,11 +553,9 @@ void GameScene::bullet(float f)
 				auto towerBullet = Sprite::create(picture);
 				towerBullet->setScale(scale);
 				towerBullet->setPosition(Stower->getPosition() + Vec2(offsetx, offsety));
-				auto time = sqrt(pow(Smonster->getPosition().x - Stower->getPosition().x, 2) + pow(Smonster->getPosition().y - Stower->getPosition().y, 2)) / (*iter).getTowerProperty().speed;
-				auto moveBullet = MoveTo::create(time, Vec2(Smonster->getPosition()));
-				auto fadeout = FadeOut::create(0.5);
-				auto seq = Sequence::create(moveBullet, fadeout, nullptr);
-				towerBullet->runAction(seq);
+				auto time = Smonster->getPosition().getDistance(Stower->getPosition()) / (*iter).getTowerProperty().speed;
+
+				towerBullet->runAction(Sequence::create(MoveTo::create(time, Vec2(Smonster->getPosition())), FadeOut::create(0.5), nullptr));
 				bullets.push_back(towerBullet);
 				this->addChild(towerBullet, 11);
 				break;
@@ -570,9 +568,8 @@ void GameScene::bullet(float f)
 //子弹打中怪物
 void GameScene::hitByBullet()
 {
-	vector<Monster> monster = monsterManager.getMonsters();
 	Sprite* Smonster;
-	for (auto iter1 = monster.begin(); iter1 != monster.end(); iter1++)
+	for (auto iter1 = monsterManager.storage.begin(); iter1 != monsterManager.storage.end(); iter1++)
 	{
 		Smonster = (Sprite*)(*iter1).getSprite();
 		for (auto iter2 = bullets.begin(); iter2 != bullets.end(); iter2++)

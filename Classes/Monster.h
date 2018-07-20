@@ -66,9 +66,10 @@ public:
 
 class MonsterManager {
 private:
-	vector<Monster> storage;
 	int deltaTime;
 public:
+	vector<Monster> storage;
+
 	void createMonster(string picture, Scene* scene, myLine line, monsterProperty setting)
 	{
 		Sprite* monster = Sprite::createWithSpriteFrameName(picture);
@@ -117,10 +118,14 @@ public:
 					//播放死亡动画，并在死亡后消灭它
 					monsterAnimate(*iter, "dead");
 					(*iter).isActive = false;
-					iter = storage.erase(iter);
-					end = true;
 				}
 			}
+			else
+			{
+				iter = storage.erase(iter);
+				end = true;
+			}
+
 			if (!end)
 			{
 				iter++;
@@ -128,7 +133,7 @@ public:
 
 		}
 	}
-	void monsterAnimate(Monster monster,string behaviour)
+	void monsterAnimate(Monster& monster,string behaviour)
 	{
 		if (!monster.isActive)
 			return;
@@ -162,10 +167,6 @@ public:
 				}), nullptr));
 			}
 		}
-	}
-	vector<Monster> getMonsters()
-	{
-		return storage;
 	}
 
 };
