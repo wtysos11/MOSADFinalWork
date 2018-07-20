@@ -26,6 +26,7 @@ bool GameScene::init()
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+	isQuit = false;
 	float myXPosition = visibleSize.width / 2 + origin.x;
 	float myYPosition = visibleSize.height / 2 + origin.y;
 
@@ -324,7 +325,7 @@ void GameScene::onMouseMove(EventMouse* event)
 {
 	Vec2 x = event->getLocationInView();
 	//CCLOG("%f,%f", x.x,x.y);
-	if (readyItem != NULL)
+	if (readyItem != NULL && !isQuit)
 	{
 		readyItem->setPosition(x.x, x.y);
 	}
@@ -380,6 +381,7 @@ void GameScene::walkMenuCallback(Ref* pSender) {
 }
 
 void GameScene::quitCallback(Ref* pSender) {
+	isQuit = true;
 	auto newScene = MenuScene::createScene();
 	Director::getInstance()->replaceScene(CCTransitionFade::create(0.5, newScene));
 }
