@@ -309,6 +309,7 @@ bool GameScene::init()
 
 	//调度器
 	schedule(schedule_selector(GameScene::update), 0.1f, kRepeatForever, 0);
+	schedule(schedule_selector(GameScene::bullet), 1.5f, kRepeatForever, 0);
 	//事件处理器
 	auto touchListener = EventListenerTouchOneByOne::create();
 	touchListener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
@@ -319,6 +320,7 @@ bool GameScene::init()
 void GameScene::update(float f)
 {
 	monsterManager.updateAll();
+	hitByBullet();
 }
 
 void GameScene::onMouseMove(EventMouse* event)
@@ -504,4 +506,83 @@ void GameScene::updateTower(Object* pSender)
 	towerManager.updateTower(menuPos);
 	towerMenu->removeFromParentAndCleanup(true);
 	towerMenu = NULL;
+}
+
+//新加
+//发射子弹
+void GameScene::bullet(float f)
+{
+	vector<Tower> tower = towerManager.getTowers();
+	vector<Monster> monster = monsterManager.getMonsters();
+	Sprite* Smonster;
+	Sprite* Stower;
+	for (auto iter = tower.begin(); iter != tower.end(); iter++)
+	{
+		Stower = (Sprite*)(*iter).getTower();
+		if ((*iter).getType() == 0)
+			continue;
+		for (auto iter1 = monster.begin(); iter1 != monster.end(); iter1++)
+		{
+			Smonster = (Sprite*)(*iter1).getSprite();
+			//判断怪物与塔的距离，如果小于塔的射程，那么发射子弹
+			if (sqrt(pow(Smonster->getPosition().x - Stower->getPosition().x, 2) + pow(Smonster->getPosition().y - Stower->getPosition().y, 2))<(*iter).getTowerProperty().range)//
+			{
+				string picture = "";
+				float offsetx, offsety, scale;
+				switch ((*iter).getType())
+				{
+				case 1:
+					picture = "tower1Bullet.png";
+					offsetx = -2;
+					offsety = 40;
+					scale = 0.8;
+					break;
+				case 2:
+					picture = "tower2Bullet.png";
+					offsetx = -4;
+					offsety = 40;
+					scale = 0.5;
+					break;
+				case 3:
+					picture = "tower3Bullet.png";
+					offsetx = -4;
+					offsety = 13;
+					scale = 0.8;
+					break;
+				}
+				auto towerBullet = Sprite::create(picture);
+				towerBullet->setScale(scale);
+				towerBullet->setPosition(Stower->getPosition() + Vec2(offsetx, offsety));
+				auto time = sqrt(pow(Smonster->getPosition().x - Stower->getPosition().x, 2) + pow(Smonster->getPosition().y - Stower->getPosition().y, 2)) / (*iter).getTowerProperty().speed;
+				auto moveBullet = MoveTo::create(time, Vec2(Smonster->getPosition()));
+				auto fadeout = FadeOut::create(0.5);
+				auto seq = Sequence::create(moveBullet, fadeout, nullptr);
+				towerBullet->runAction(seq);
+				bullets.push_back(towerBullet);
+				this->addChild(towerBullet, 11);
+				break;
+			}
+		}
+
+	}
+
+}
+//子弹打中怪物
+void GameScene::hitByBullet()
+{
+	vector<Monster> monster = monsterManager.getMonsters();
+	Sprite* Smonster;
+	for (auto iter1 = monster.begin(); iter1 != monster.end(); iter1++)
+	{
+		Smonster = (Sprite*)(*iter1).getSprite();
+		for (auto iter2 = bullets.begin(); iter2 != bullets.end(); iter2++)
+		{
+			if (Smonster->getBoundingBox().containsPoint((*iter2)->getPosition()))
+			{
+				//到时候这里添加血条减少的操作
+				monsterManager.monsterAnimate((*iter1), "dead");
+			}
+		}
+	}
+
 }

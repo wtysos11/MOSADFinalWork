@@ -163,6 +163,10 @@ public:
 			}
 		}
 	}
+	vector<Monster> getMonsters()
+	{
+		return storage;
+	}
 
 };
 #endif

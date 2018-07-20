@@ -16,8 +16,8 @@ struct TowerProperty {
 	TowerProperty()
 	{
 		attack = 0;
-		speed = 1.0f;
-		range = 100.0f;
+		speed = 200.0f;
+		range = 300.0f;
 	}
 };
 
@@ -48,6 +48,15 @@ public:
 	float countDistance(Vec2 pos)
 	{
 		return pos.getDistance(tower->getPosition());
+	}
+	TowerProperty getTowerProperty()
+	{
+		return setting;
+	}
+
+	Sprite* getTower()
+	{
+		return tower;
 	}
 	int getType()
 	{
@@ -120,6 +129,11 @@ public:
 		scene->addChild(sp, 10);
 		tower.push_back(Tower(setting, sp, type));
 	}
+	vector<Tower> getTowers()
+	{
+		return tower;
+	}
+
 	//根据精灵指针寻找对应的对象
 	Tower getTower(Sprite* t)
 	{
