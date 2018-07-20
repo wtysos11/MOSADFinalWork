@@ -233,59 +233,6 @@ bool GameScene::init()
 	auto quitButtonMenu = Menu::create(quitButton, NULL);
 	quitButtonMenu->setPosition(Vec2::ZERO);
 	this->addChild(quitButtonMenu, 10);
-
-	////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// 这些按钮只是用来测试帧动画，可以参考以下方法使用帧动画
-	// 准备使用3种enemy，每种enemy只有3个动作，就是行走、攻击、死亡。
-
-	// 添加enemy1并播放帧动画(在AppDelegate.cpp里加载好了帧动画资源）
-	enemy1 = Sprite::createWithSpriteFrameName("enemy1_0.png");
-	enemy1->setScale(0.8);
-	Animate* enemy1Animation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy1Animation"));
-	enemy1->runAction(RepeatForever::create(enemy1Animation));
-	enemy1->setPosition(Vec2(myXPosition, myYPosition));
-	this->addChild(enemy1, 2);
-
-	// 添加enemy2并播放帧动画(在AppDelegate.cpp里加载好了帧动画资源）
-	enemy2 = Sprite::createWithSpriteFrameName("enemy2_0.png");
-	enemy2->setScale(0.8);
-	Animate* enemy2Animation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy2Animation"));
-	enemy2->runAction(RepeatForever::create(enemy2Animation));
-	enemy2->setPosition(Vec2(myXPosition + 200, myYPosition));
-	this->addChild(enemy2, 2);
-
-	// 添加enemy3并播放帧动画(在AppDelegate.cpp里加载好了帧动画资源）
-	enemy3 = Sprite::createWithSpriteFrameName("enemy3_0.png");
-	enemy3->setScale(0.8);
-	Animate* enemy3Animation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy3Animation"));
-	enemy3->runAction(RepeatForever::create(enemy3Animation));
-	enemy3->setPosition(Vec2(myXPosition - 200, myYPosition));
-	this->addChild(enemy3, 2);
-
-	// 攻击
-	auto attackMenuItem = MenuItemLabel::create(Label::createWithSystemFont("attack", "fonts/Marker Felt.ttf", 50),
-		CC_CALLBACK_1(GameScene::attackMenuCallback, this));
-	attackMenuItem->setPosition(Vec2(myXPosition + 500, myYPosition + 300));
-	auto attackMenu = Menu::create(attackMenuItem, NULL);
-	attackMenu->setPosition(Vec2::ZERO);
-	this->addChild(attackMenu, 10);
-
-	// 死亡
-	auto deadMenuItem = MenuItemLabel::create(Label::createWithSystemFont("dead", "fonts/Marker Felt.ttf", 50),
-		CC_CALLBACK_1(GameScene::deadMenuCallback, this));
-	deadMenuItem->setPosition(Vec2(myXPosition + 500, myYPosition + 250));
-	auto deadMenu = Menu::create(deadMenuItem, NULL);
-	deadMenu->setPosition(Vec2::ZERO);
-	this->addChild(deadMenu, 10);
-
-	// 行走
-	auto walkMenuItem = MenuItemLabel::create(Label::createWithSystemFont("walk", "fonts/Marker Felt.ttf", 50),
-		CC_CALLBACK_1(GameScene::walkMenuCallback, this));
-	walkMenuItem->setPosition(Vec2(myXPosition + 500, myYPosition + 200));
-	auto walkMenu = Menu::create(walkMenuItem, NULL);
-	walkMenu->setPosition(Vec2::ZERO);
-	this->addChild(walkMenu, 10);
-	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	//line1
 	line1.addPoint(0, 189);
 	line1.addPoint(100, 212);
@@ -337,6 +284,16 @@ bool GameScene::init()
 	createMonster(rate);
 	is_create = true;
 	ct = 0;
+
+	//显示金币跟波数
+	rateNum = Label::createWithTTF("Rate: 1/10", "fonts/arial.TTF", 40);
+	rateNum->setColor(Color3B(255, 255, 255));
+	rateNum->setPosition(visibleSize.width - 150, visibleSize.height - 50);
+	this->addChild(rateNum, 3);
+	moneyNum = Label::createWithTTF("Money: 0", "fonts/arial.TTF", 40);
+	moneyNum->setColor(Color3B(255, 255, 255));
+	moneyNum->setPosition(visibleSize.width - 165, visibleSize.height - 100);
+	this->addChild(moneyNum, 3);
 
 	//调度器
 	schedule(schedule_selector(GameScene::update), 0.1f, kRepeatForever, 0);
@@ -445,6 +402,9 @@ void GameScene::quitCallback(Ref* pSender) {
 
 void GameScene::addTower1(Object* pSender)
 {
+	if (money < 200) return;
+	else modifyMoney(1);
+
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	if (readyItem != NULL)
 	{
@@ -459,6 +419,9 @@ void GameScene::addTower1(Object* pSender)
 }
 void GameScene::addTower2(Object* pSender)
 {
+	if (money < 200) return;
+	else modifyMoney(1);
+
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	if (readyItem != NULL)
 	{
@@ -473,6 +436,9 @@ void GameScene::addTower2(Object* pSender)
 }
 void GameScene::addTower3(Object* pSender)
 {
+	if (money < 200) return;
+	else modifyMoney(1);
+	
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	if (readyItem != NULL)
 	{
@@ -557,7 +523,10 @@ void GameScene::deleteTower(Object* pSender)
 }
 void GameScene::updateTower(Object* pSender)
 {
-	towerManager.updateTower(menuPos);
+	if (money >= 200) {
+		modifyMoney(1);
+		towerManager.updateTower(menuPos);
+	}
 	towerMenu->removeFromParentAndCleanup(true);
 	towerMenu = NULL;
 }
@@ -694,4 +663,37 @@ void GameScene::createMonster(int rate)
 
 void GameScene::gameWin()
 {
+}
+
+//修改金币
+void GameScene::modifyMoney(int type)
+{
+	switch (type)
+	{
+		//击杀怪兽
+	case 0:
+		money += 20;
+		break;
+
+		//升级1类型塔
+	case 1:
+		money -= 200;
+		break;
+
+		//升级2类型塔
+	case 2:
+		money -= 200;
+		break;
+
+		//升级3类型塔
+	case 3:
+		money -= 200;
+		break;
+	default:
+		break;
+	}
+
+	char str[15];
+	sprintf(str, "Money: %d", money);
+	moneyNum->setString(str);
 }

@@ -33,6 +33,7 @@ public:
 	void hitByBullet();
 	void createMonster(int rate);
 	void gameWin();
+	void modifyMoney(int type);
 private:
 	MonsterManager monsterManager;
 	TowerManager towerManager;
@@ -67,4 +68,9 @@ private:
 	bool judgingBullets = false;
 	//±¬Õ¨
 	cocos2d::Vector<SpriteFrame*> explore;
+
+	//½ðÇ®
+	int money;
+	Label* rateNum;
+	Label* moneyNum;
 };

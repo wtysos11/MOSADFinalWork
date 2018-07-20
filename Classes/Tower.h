@@ -8,12 +8,14 @@ struct TowerProperty {
 	float speed;
 	float range;
 	int delta;
+	int rank;
 	TowerProperty(int attack, float speed,int range,int delta)
 	{
 		this->attack = attack;
 		this->speed = speed;
 		this->range = range;
 		this->delta = delta;
+		rank = 0;
 	}
 	TowerProperty()
 	{
@@ -21,6 +23,7 @@ struct TowerProperty {
 		speed = 200.0f;
 		range = 300.0f;
 		delta = 15;
+		rank = 0;
 	}
 };
 
@@ -123,6 +126,12 @@ public:
 			return false;
 		}
 	}
+	bool upRank() {
+		if (setting.rank == -1) return false;
+		setting.rank++;
+		setting.attack += 20;
+		return true;
+	}
 };
 
 class TowerManager {
@@ -224,6 +233,7 @@ public:
 			if ((*iter).countDistance(pos) < 30)
 			{
 				//(*iter).changeType(0);
+				(*iter).upRank();
 				break;
 			}
 		}
