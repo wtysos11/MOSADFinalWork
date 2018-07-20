@@ -57,4 +57,6 @@ private:
 	std::vector<Sprite*> bullets;
 	std::vector<int> bulletAttack;
 	bool judgingBullets = false;
+	//±¬Õ¨
+	cocos2d::Vector<SpriteFrame*> explore;
 };

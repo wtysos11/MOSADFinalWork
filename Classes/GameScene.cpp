@@ -71,6 +71,14 @@ bool GameScene::init()
 	totemBullet->setPosition(Vec2(myXPosition + 16, myYPosition - 258));
 	this->addChild(totemBullet, 3);
 
+	//爆炸动画
+	auto texture = Director::getInstance()->getTextureCache()->addImage("explosion.png");
+	explore.reserve(8);
+	for (int i = 0; i < 8; i++) {
+		auto frame = SpriteFrame::createWithTexture(texture, CC_RECT_PIXELS_TO_POINTS(Rect(190 * (i % 5), 200 * (i >= 5), 190, 200)));
+		explore.pushBack(frame);
+	}
+
 	/*
 	// 塔位数量
 	towerLandsNum = 12;
@@ -593,13 +601,22 @@ void GameScene::hitByBullet()
 			if (Smonster->getBoundingBox().containsPoint((*iter2)->getPosition()))//爆炸，删除子弹
 			{
 				//到时候这里添加血条减少的操作
+				Sprite* boomBullet = (*iter2);
+				boomBullet->runAction(
+					Sequence::create(
+						Animate::create(
+							Animation::createWithSpriteFrames(explore, 0.05f, 1)),
+						CallFunc::create([boomBullet] {
+							boomBullet->removeFromParentAndCleanup(true);
+						}),
+						nullptr));
 
 				//被击杀
 				if ((*iter1).beingAttacked(*iter3))
 				{
 					monsterManager.monsterAnimate((*iter1), "dead");
 				}
-				(*iter2)->removeFromParentAndCleanup(true);
+				;
 
 				iter2 = bullets.erase(iter2);
 				iter3 = bulletAttack.erase(iter3);
