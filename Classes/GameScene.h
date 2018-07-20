@@ -31,6 +31,8 @@ public:
 	void updateTower(Object* pSender);
 	void bullet(float f);
 	void hitByBullet();
+	void createMonster(int rate);
+	void gameWin();
 private:
 	MonsterManager monsterManager;
 	TowerManager towerManager;
@@ -41,6 +43,12 @@ private:
 	int towerLandsNum;
 	std::vector<Sprite*> towerLands;
 	std::vector<Vec2> towerLandsPositions;
+
+	//创建怪兽相关
+	int rate;//记录游戏的波数
+	myLine line1, line2, line3, line4; //三条线路
+	int ct;//记录时间
+	bool is_create;//是否创建怪兽
 
 	//创建塔相关
 	int clickItemtype;//-1为空，其余与塔号看齐

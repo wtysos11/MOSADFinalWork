@@ -197,5 +197,8 @@ public:
 		}
 	}
 
+	bool isEmpty() {
+		return storage.empty();
+	}
 };
 #endif

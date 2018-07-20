@@ -286,7 +286,7 @@ bool GameScene::init()
 	walkMenu->setPosition(Vec2::ZERO);
 	this->addChild(walkMenu, 10);
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	myLine line1;
+	//line1
 	line1.addPoint(0, 189);
 	line1.addPoint(100, 212);
 	line1.addPoint(200, 259);
@@ -299,7 +299,7 @@ bool GameScene::init()
 	line1.addPoint(700, 245);
 	line1.addPoint(735, 183);
 	line1.addPoint(myXPosition, myYPosition - 300);
-	myLine line2;
+	//line2;
 	line2.addPoint(0, 493);
 	line2.addPoint(100, 441);
 	line2.addPoint(200, 450);
@@ -310,7 +310,7 @@ bool GameScene::init()
 	line2.addPoint(700, 245);
 	line2.addPoint(735, 183);
 	line2.addPoint(myXPosition, myYPosition - 300);
-	myLine line3;
+	//line3;
 	line3.addPoint(757, 698);
 	line3.addPoint(732, 619);
 	line3.addPoint(737, 495);
@@ -319,7 +319,7 @@ bool GameScene::init()
 	line3.addPoint(916, 199);
 	line3.addPoint(735, 183);
 	line3.addPoint(myXPosition, myYPosition - 300);
-	myLine line4;
+	//line4;
 	line4.addPoint(1244, 443);
 	line4.addPoint(1077, 436);
 	line4.addPoint(916, 303);
@@ -327,10 +327,16 @@ bool GameScene::init()
 	line4.addPoint(735, 183);
 	line4.addPoint(myXPosition, myYPosition - 300);
 
-	monsterManager.createMonster("enemy3_0.png",this, line3, monsterProperty(100,50));
-	monsterManager.createMonster("enemy3_0.png", this, line3, monsterProperty(100, 50));
-	monsterManager.createMonster("enemy3_0.png", this, line3, monsterProperty(100, 50));
-	monsterManager.createMonster("enemy1_0.png", this, line4, monsterProperty(100, 50));
+	//monsterManager.createMonster("enemy3_0.png",this, line3, monsterProperty(100,50));
+	//monsterManager.createMonster("enemy3_0.png", this, line3, monsterProperty(100, 50));
+	//monsterManager.createMonster("enemy3_0.png", this, line3, monsterProperty(100, 50));
+	//monsterManager.createMonster("enemy1_0.png", this, line4, monsterProperty(100, 50));
+
+	//创建第一波怪兽
+	rate = 0;
+	createMonster(rate);
+	is_create = true;
+	ct = 0;
 
 	//调度器
 	schedule(schedule_selector(GameScene::update), 0.1f, kRepeatForever, 0);
@@ -346,6 +352,29 @@ void GameScene::update(float f)
 {
 	monsterManager.updateAll();
 	hitByBullet();
+
+	if (is_create) {
+		ct++;
+		int speed = 10 + 10 * ((rate + 1) / 2);
+		int dalaytime = 800 / speed;
+		int temp = ct / dalaytime;
+		if (temp >= (3 + rate / 2)) {
+			is_create = false;
+			ct = 0;
+		}
+		else if (ct % dalaytime == 0) createMonster(rate);
+	}
+	else {	//判断是生成一波新怪兽还是游戏结束
+		if (monsterManager.isEmpty()) {
+			if (rate > 9) {
+				gameWin();
+			}
+			else {
+				is_create = true;
+				rate++;
+			}
+		}
+	}
 }
 
 void GameScene::onMouseMove(EventMouse* event)
@@ -651,4 +680,18 @@ void GameScene::hitByBullet()
 	}
 	judgingBullets = false;
 
+}
+
+void GameScene::createMonster(int rate)
+{
+	//int num = 3 + rate/2;
+	int speed = 10 + 10 * ((rate + 1) / 2);
+
+	monsterManager.createMonster("enemy1_0.png", this, line1, monsterProperty(100, speed));
+	monsterManager.createMonster("enemy2_0.png", this, line2, monsterProperty(100, speed));
+	monsterManager.createMonster("enemy3_0.png", this, line3, monsterProperty(100, speed));
+}
+
+void GameScene::gameWin()
+{
 }
