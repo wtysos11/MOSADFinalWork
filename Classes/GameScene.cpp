@@ -48,28 +48,43 @@ bool GameScene::init()
 
 	// 血条后面那个框框
 	auto healthBarContaier = Sprite::create("HealthBar1.png");
-	healthBarContaier->setScale(1, 0.5);
+	healthBarContaier->setScale(1, 0.7);
 	healthBarContaier->setPosition(Vec2(myXPosition, myYPosition + 320));
 	this->addChild(healthBarContaier, 10);
 
 	// 血条（图腾的血量，图腾血量为0就游戏结束）
+	auto sp = Sprite::create("HealthBar2.png");
+	healthBar = ProgressTimer::create(sp);
+	healthBar->setType(ProgressTimerType::BAR);
+	healthBar->setBarChangeRate(Point(1, 0));
+	healthBar->setMidpoint(Point(0, 0));
+	healthBar->setPercentage(100);
+	healthBar->setPosition(Vec2(myXPosition, myYPosition + 313));
+	this->addChild(healthBar, 9);
+	monsterManager.registerHealthBar(healthBar);
+	/*
 	healthBar = Sprite::create("HealthBar2.png");
 	healthBar->setScale(1, 0.5);
 	healthBar->setPosition(Vec2(myXPosition, myYPosition + 313));
-	this->addChild(healthBar, 9);
+	this->addChild(healthBar, 9);*/
+
 
 	// 图腾
+	/*
 	auto totem = Sprite::create("Totem.png");
 	totem->setScale(MY_SCALE_SIZE);
 	totem->setPosition(Vec2(myXPosition, myYPosition - 300));
 	this->addChild(totem, 2);
+	*/
+	towerManager.createTower("Totem.png", TowerProperty(100, 300, 800,20), Vec2(myXPosition, myYPosition - 300),this);
 
 	// 图腾子弹
+		/*
 	auto totemBullet = Sprite::create("TotemBullet.png");
 	totemBullet->setScale(MY_SCALE_SIZE);
 	// 这是图腾子弹射击的起始位置
 	totemBullet->setPosition(Vec2(myXPosition + 16, myYPosition - 258));
-	this->addChild(totemBullet, 3);
+	this->addChild(totemBullet, 3);*/
 
 	//爆炸动画
 	auto texture = Director::getInstance()->getTextureCache()->addImage("explosion.png");
@@ -323,7 +338,7 @@ bool GameScene::init()
 	//事件处理器
 	auto touchListener = EventListenerTouchOneByOne::create();
 	touchListener->onTouchBegan = CC_CALLBACK_2(GameScene::onTouchBegan, this);
-	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, totem);
+	this->getEventDispatcher()->addEventListenerWithSceneGraphPriority(touchListener, gameBg);
 	return true;
 }
 
@@ -563,6 +578,12 @@ void GameScene::bullet(float f)
 					picture = "tower3Bullet.png";
 					offsetx = -4;
 					offsety = 13;
+					scale = 0.8;
+					break;
+				case 4:
+					picture = "TotemBullet.png";
+					offsetx = 16;
+					offsety = 50;
 					scale = 0.8;
 					break;
 				}

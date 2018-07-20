@@ -34,7 +34,7 @@ public:
 private:
 	MonsterManager monsterManager;
 	TowerManager towerManager;
-	Sprite * healthBar;
+	ProgressTimer * healthBar;
 	Sprite * enemy1;
 	Sprite * enemy2;
 	Sprite * enemy3;

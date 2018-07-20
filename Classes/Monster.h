@@ -80,8 +80,22 @@ public:
 class MonsterManager {
 private:
 	int deltaTime;
+	float totemHealth = 100.0f;
+	ProgressTimer* healthBar;
 public:
 	vector<Monster> storage;
+
+	void registerHealthBar(ProgressTimer* healthBar)
+	{
+		this->healthBar = healthBar;
+	}
+	void totemAttacked()
+	{
+		totemHealth -= 5.0f;
+		if (totemHealth < 0)
+			totemHealth = 0;
+		healthBar->setPercentage(totemHealth);
+	}
 
 	void createMonster(string picture, Scene* scene, myLine line, monsterProperty setting)
 	{
@@ -130,6 +144,7 @@ public:
 				{
 					//播放死亡动画，并在死亡后消灭它
 					monsterAnimate(*iter, "dead");
+					totemAttacked();
 					(*iter).isActive = false;
 				}
 			}
