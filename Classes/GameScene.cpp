@@ -179,10 +179,11 @@ bool GameScene::init()
 	this->addChild(tower3Bullet, 3);
 	*/
 	//ËþÑ¡Ôñ²Ëµ¥
+	/*
 	Sprite* chooseBackground = Sprite::create("label.jpg");
 	chooseBackground->setAnchorPoint(Vec2(0, 0));
 	chooseBackground->setPosition(Vec2(visibleSize.width-150, -200));
-	this->addChild(chooseBackground, 2);
+	this->addChild(chooseBackground, 2);*/
 
 	readyItem = NULL;
 	towerMenu = NULL;
@@ -194,21 +195,33 @@ bool GameScene::init()
 		"tower1.png", 
 		CC_CALLBACK_1(GameScene::addTower1, this));
 	tower1->setScale(0.7);
-	tower1->setPosition(Vec2(visibleSize.width - 100, 150));
+	tower1->setPosition(Vec2(visibleSize.width - 150, 150));
+	auto towerMoney1 = Label::createWithSystemFont("200", "Microsoft Yahei", 36.0f);
+	towerMoney1->setColor(Color3B(255, 255, 0));
+	towerMoney1->setPosition(Vec2(visibleSize.width - 50, 150));
+	this->addChild(towerMoney1, 6);
 
 	auto tower2 = MenuItemImage::create(
 		"tower2.png",
 		"tower2.png",
 		CC_CALLBACK_1(GameScene::addTower2, this));
 	tower2->setScale(0.8);
-	tower2->setPosition(Vec2(visibleSize.width - 100, 250));
+	tower2->setPosition(Vec2(visibleSize.width - 150, 250));
+	auto towerMoney2 = Label::createWithSystemFont("200", "Microsoft Yahei", 36.0f);
+	towerMoney2->setColor(Color3B(255, 255, 0));
+	towerMoney2->setPosition(Vec2(visibleSize.width - 50, 250));
+	this->addChild(towerMoney2, 6);
 
 	auto tower3 = MenuItemImage::create(
 		"tower3.png",
 		"tower3.png",
 		CC_CALLBACK_1(GameScene::addTower3, this));
 	tower3->setScale(0.8);
-	tower3->setPosition(Vec2(visibleSize.width - 100, 330));
+	tower3->setPosition(Vec2(visibleSize.width - 150, 330));
+	auto towerMoney3 = Label::createWithSystemFont("200", "Microsoft Yahei", 36.0f);
+	towerMoney3->setColor(Color3B(255, 255, 0));
+	towerMoney3->setPosition(Vec2(visibleSize.width - 50, 330));
+	this->addChild(towerMoney3, 6);
 
 	auto menu = Menu::create(tower1, tower2, tower3, NULL);
 	menu->setPosition(Vec2::ZERO);
