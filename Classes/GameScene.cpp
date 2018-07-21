@@ -100,13 +100,6 @@ bool GameScene::init()
 	totemBullet->setPosition(Vec2(myXPosition + 16, myYPosition - 258));
 	this->addChild(totemBullet, 3);*/
 
-	//爆炸动画
-	auto texture = Director::getInstance()->getTextureCache()->addImage("explosion.png");
-	explore.reserve(8);
-	for (int i = 0; i < 8; i++) {
-		auto frame = SpriteFrame::createWithTexture(texture, CC_RECT_PIXELS_TO_POINTS(Rect(190 * (i % 5), 200 * (i >= 5), 190, 200)));
-		explore.pushBack(frame);
-	}
 
 	/*
 	// 塔位数量
@@ -682,10 +675,10 @@ void GameScene::hitByBullet()
 			{
 				//到时候这里添加血条减少的操作
 				Sprite* boomBullet = (*iter2);
+				boomBullet->stopAllActions();
 				boomBullet->runAction(
 					Sequence::create(
-						Animate::create(
-							Animation::createWithSpriteFrames(explore, 0.05f, 1)),
+						Animate::create(AnimationCache::getInstance()->getAnimation("explodeAnimation")),
 						CallFunc::create([boomBullet] {
 							boomBullet->removeFromParentAndCleanup(true);
 						}),

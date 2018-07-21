@@ -185,6 +185,21 @@ bool AppDelegate::applicationDidFinishLaunching() {
 	enemy3DeadAnimation->setDelayPerUnit(0.1);
 	AnimationCache::getInstance()->addAnimation(enemy3DeadAnimation, "enemy3DeadAnimation");
 
+	// ±¬Õ¨Ö¡¶¯»­
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("sprite_level4-hd.plist");
+	int totalFrames_explode = 18;
+	char frameName_explode[40];
+	Animation* explodeAnimation = Animation::create();
+	for (int i = 1; i <= totalFrames_explode; i++) {
+		if (i < 10)
+			sprintf(frameName_explode, "proy_molotov_explosion_000%d.png", i);
+		else
+			sprintf(frameName_explode, "proy_molotov_explosion_00%d.png", i);
+		explodeAnimation->addSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName(frameName_explode));
+	}
+	explodeAnimation->setDelayPerUnit(0.06);
+	AnimationCache::getInstance()->addAnimation(explodeAnimation, "explodeAnimation");
+
 
 	// create a scene. it's an autorelease object
 	auto scene = MenuScene::createScene();

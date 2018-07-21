@@ -68,8 +68,7 @@ private:
 	std::vector<Sprite*> bullets;
 	std::vector<int> bulletAttack;
 	bool judgingBullets = false;
-	//±¬Õ¨
-	cocos2d::Vector<SpriteFrame*> explore;
+
 	//½ðÇ®
 	int money = 400;
 	int score = 0;
