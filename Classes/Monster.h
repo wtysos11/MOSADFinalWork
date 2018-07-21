@@ -106,7 +106,7 @@ public:
 	}
 	void totemAttacked()
 	{
-		totemHealth -= 50.0f;
+		totemHealth -= 10.0f;
 		if (totemHealth < 0)
 			totemHealth = 0;
 		healthBar->setPercentage(totemHealth);

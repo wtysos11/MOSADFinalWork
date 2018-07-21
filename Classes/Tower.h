@@ -77,14 +77,17 @@ public:
 		if (type == 1)
 		{
 			tower->setTexture("tower1.png");
+			setting = TowerProperty(10, 400, 100, 5);
 		}
 		else if (type == 2)
 		{
 			tower->setTexture("tower2.png");
+			setting = TowerProperty(30, 300, 300, 10);
 		}
 		else if (type == 3)
 		{
 			tower->setTexture("tower3.png");
+			setting = TowerProperty(200, 100, 150, 20);
 		}
 		else if (type == 0)
 		{

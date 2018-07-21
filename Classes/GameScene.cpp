@@ -89,7 +89,7 @@ bool GameScene::init()
 	totem->setPosition(Vec2(myXPosition, myYPosition - 300));
 	this->addChild(totem, 2);
 	*/
-	towerManager.createTower("Totem.png", TowerProperty(10, 300, 800,20), Vec2(myXPosition, myYPosition - 300),this);
+	towerManager.createTower("Totem.png", TowerProperty(1000, 500, 300,30), Vec2(myXPosition, myYPosition - 300),this);
 
 	// Í¼ÌÚ×Óµ¯
 		/*
@@ -694,8 +694,7 @@ void GameScene::hitByBullet()
 void GameScene::createMonster(int rate)
 {
 	//int num = 3 + rate/2;
-	//int speed = 10 + 10 * ((rate + 1) / 2);
-	int speed = 50;
+	int speed = 40 + 10 * ((rate + 1) / 2);
 	monsterManager.createMonster("enemy1_0.png", this, line1, monsterProperty(100, speed));
 	monsterManager.createMonster("enemy2_0.png", this, line2, monsterProperty(100, speed));
 	monsterManager.createMonster("enemy3_0.png", this, line3, monsterProperty(100, speed));
