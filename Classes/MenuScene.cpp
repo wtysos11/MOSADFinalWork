@@ -29,6 +29,10 @@ bool MenuScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+	auto firework = ParticleFlower::create();
+	firework->setPosition(480, 460);
+	this->addChild(firework,100);
+
 	// ±³¾°ÒôÀÖ
 	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
 	audio->preloadBackgroundMusic("sounds/Jungle_Prep.mp3");

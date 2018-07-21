@@ -695,7 +695,7 @@ void GameScene::createMonster(int rate)
 {
 	//int num = 3 + rate/2;
 	//int speed = 10 + 10 * ((rate + 1) / 2);
-	int speed = 20;
+	int speed = 50;
 	monsterManager.createMonster("enemy1_0.png", this, line1, monsterProperty(100, speed));
 	monsterManager.createMonster("enemy2_0.png", this, line2, monsterProperty(100, speed));
 	monsterManager.createMonster("enemy3_0.png", this, line3, monsterProperty(100, speed));
@@ -718,6 +718,22 @@ void GameScene::gameWin()
 		Label* label = Label::createWithSystemFont(str.getCString(), "宋体", 60);
 		label->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 		this->addChild(label, 101);
+
+		//粒子系统
+		auto ps = ParticleFireworks::create();
+		ps->setPosition(300, 100);
+		ps->setLife(1.5f);
+		ps->setSpeed(300);
+		ps->setStartColor(ccc4f(1, (float)251 / 255, (float)21 / 255, 1));
+		ps->setEndColor(ccc4f(1, (float)251 / 255, (float)21 / 255, 1));
+		this->addChild(ps, 50);
+		auto ps2 = ParticleFireworks::create();
+		ps2->setPosition(visibleSize.width - 300, 100);
+		ps2->setLife(1.5f);
+		ps2->setSpeed(300);
+		ps2->setStartColor(ccc4f(1, (float)251 / 255, (float)21 / 255, 1));
+		ps2->setEndColor(ccc4f(1, (float)251 / 255, (float)21 / 255, 1));
+		this->addChild(ps2, 50);
 	}
 }
 
