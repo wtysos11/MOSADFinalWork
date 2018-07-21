@@ -76,109 +76,11 @@ bool GameScene::init()
 	healthBar->setPosition(Vec2(myXPosition, myYPosition + 313));
 	this->addChild(healthBar, 9);
 	monsterManager.registerHealthBar(healthBar);
-	/*
-	healthBar = Sprite::create("HealthBar2.png");
-	healthBar->setScale(1, 0.5);
-	healthBar->setPosition(Vec2(myXPosition, myYPosition + 313));
-	this->addChild(healthBar, 9);*/
 
-
-	// 图腾
-	/*
-	auto totem = Sprite::create("Totem.png");
-	totem->setScale(MY_SCALE_SIZE);
-	totem->setPosition(Vec2(myXPosition, myYPosition - 300));
-	this->addChild(totem, 2);
-	*/
+	//创建图腾
 	towerManager.createTower("Totem.png", TowerProperty(1000, 500, 300,30), Vec2(myXPosition, myYPosition - 300),this);
-
-	// 图腾子弹
-		/*
-	auto totemBullet = Sprite::create("TotemBullet.png");
-	totemBullet->setScale(MY_SCALE_SIZE);
-	// 这是图腾子弹射击的起始位置
-	totemBullet->setPosition(Vec2(myXPosition + 16, myYPosition - 258));
-	this->addChild(totemBullet, 3);*/
-
-
-	/*
-	// 塔位数量
-	towerLandsNum = 12;
-
-	// 各个塔位的位置
-	// 每个绿色地为一块，下面的塔位位置的顺序是从左到右
-	// 左上块
-	towerLandsPositions.push_back(Vec2(myXPosition - 530, myYPosition + 165));	// 0
-	towerLandsPositions.push_back(Vec2(myXPosition - 210, myYPosition + 150));	// 1
-	towerLandsPositions.push_back(Vec2(myXPosition - 10, myYPosition + 230));	// 2
-
-	towerLandsPositions.push_back(Vec2(myXPosition + 55, myYPosition + 20));	// 3
-	towerLandsPositions.push_back(Vec2(myXPosition + 180, myYPosition - 100));	// 4
-
-																				// 左块
-	towerLandsPositions.push_back(Vec2(myXPosition - 260, myYPosition + 10));	// 5
-
-																				// 左下块
-	towerLandsPositions.push_back(Vec2(myXPosition - 320, myYPosition - 120));	// 6
-	towerLandsPositions.push_back(Vec2(myXPosition - 100, myYPosition - 100));	// 7
-	towerLandsPositions.push_back(Vec2(myXPosition - 30, myYPosition - 150));	// 8
-
-																				// 右上块
-	towerLandsPositions.push_back(Vec2(myXPosition + 180, myYPosition + 180));	// 9
-	towerLandsPositions.push_back(Vec2(myXPosition + 310, myYPosition + 60));	// 10
-
-																				// 右下块
-	towerLandsPositions.push_back(Vec2(myXPosition + 390, myYPosition - 95));	// 11
-
-																				// 放置塔位
-	for (int i = 0; i < towerLandsNum; i++)
-	{
-		auto towerLand = Sprite::create("TowerLand.png");
-		towerLand->setScale(MY_SCALE_SIZE);
-		towerLand->setPosition(towerLandsPositions[i]);
-		// 放到towerLands里，以便后面处理，可根据需要修改
-		towerLands.push_back(towerLand);
-		this->addChild(towerLand, 1);
-	}
-	// 塔和对应的子弹，注意各个塔的scale值和位置偏移量如下设置，不要设置其他值（示例）
-	auto tower1 = Sprite::create("tower1.png");
-	tower1->setScale(0.7);
-	// 各个塔位的位置的索引见上面的注释。塔的位置要加上一个偏移量如Vec2(-2, 20)。
-	tower1->setPosition(towerLandsPositions[4] + Vec2(-2, 16));
-	this->addChild(tower1, 2);
-	// 子弹
-	auto tower1Bullet = Sprite::create("tower1Bullet.png");
-	tower1Bullet->setScale(0.8);
-	tower1Bullet->setPosition(towerLandsPositions[4] + Vec2(-2, 50));
-	this->addChild(tower1Bullet, 3);
-
-	auto tower2 = Sprite::create("tower2.png");
-	tower2->setScale(0.8);
-	tower2->setPosition(towerLandsPositions[8] + Vec2(-4, 20));
-	this->addChild(tower2, 2);
-	// 子弹
-	auto tower2Bullet = Sprite::create("tower2Bullet.png");
-	tower2Bullet->setScale(0.5);
-	tower2Bullet->setPosition(towerLandsPositions[8] + Vec2(-4, 60));
-	this->addChild(tower2Bullet, 3);
-
-	auto tower3 = Sprite::create("tower3.png");
-	tower3->setScale(0.8);
-	tower3->setPosition(towerLandsPositions[3] + Vec2(0, 4));
-	this->addChild(tower3, 2);
-	// 子弹
-	auto tower3Bullet = Sprite::create("tower3Bullet.png");
-	tower3Bullet->setScale(0.8);
-	tower3Bullet->setPosition(towerLandsPositions[3] + Vec2(-4, 20));
-	this->addChild(tower3Bullet, 3);
-	*/
+	
 	//塔选择菜单
-	/*
-	Sprite* chooseBackground = Sprite::create("label.jpg");
-	chooseBackground->setAnchorPoint(Vec2(0, 0));
-	chooseBackground->setPosition(Vec2(visibleSize.width-150, -200));
-	this->addChild(chooseBackground, 2);*/
-
 	readyItem = NULL;
 	towerMenu = NULL;
 	clickItemtype = -1;
@@ -220,6 +122,7 @@ bool GameScene::init()
 	auto menu = Menu::create(tower1, tower2, tower3, NULL);
 	menu->setPosition(Vec2::ZERO);
 	this->addChild(menu, 5);
+
 	//将空地视为特殊的塔，建塔操作为在空地内部的转换
 	towerManager.createTower("TowerLand.png", TowerProperty(), Vec2(myXPosition - 530, myYPosition + 165), this);	// 0
 	towerManager.createTower("TowerLand.png", TowerProperty(), Vec2(myXPosition - 210, myYPosition + 150), this);	// 1
@@ -533,8 +436,11 @@ bool GameScene::onTouchBegan(Touch *touch, Event* event)
 			auto deleting = MenuItemImage::create("delete.png", "delete.png", CC_CALLBACK_1(GameScene::deleteTower, this));
 			deleting->setScale(0.4);
 			deleting->setPosition(Vec2(30, 50));
+			auto money = MenuItemLabel::create(Label::createWithSystemFont("200", "宋体", 18));
+			money->setColor(Color3B(255, 255, 0));
+			money->setPosition(-30, 80);
 
-			towerMenu = Menu::create(update, deleting, NULL);
+			towerMenu = Menu::create(update, deleting,money, NULL);
 			towerMenu->setPosition(clickingTower.getPosition());
 			this->addChild(towerMenu, 20);
 			clickingMenu = true;
@@ -549,8 +455,10 @@ bool GameScene::onTouchBegan(Touch *touch, Event* event)
 			auto deleting = MenuItemImage::create("delete.png", "delete.png", CC_CALLBACK_1(GameScene::deleteTower, this));
 			deleting->setScale(0.4);
 			deleting->setPosition(Vec2(30, 50));
+			auto money = MenuItemLabel::create(Label::createWithSystemFont("200", "宋体", 24));
+			money->setPosition(-30, 70);
 
-			towerMenu = Menu::create(update, deleting, NULL);
+			towerMenu = Menu::create(update, deleting, money, NULL);
 			towerMenu->setPosition(clickingTower.getPosition());
 			this->addChild(towerMenu, 20);
 			clickingMenu = true;
