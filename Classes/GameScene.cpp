@@ -2,6 +2,7 @@
 #include "MenuScene.h"
 #include "Line.h"
 #include "SimpleAudioEngine.h"
+#include "chineseDisplay.h"
 USING_NS_CC;
 // 因为图片素材是用在1920*1080分辨率窗口里的，而本游戏窗口大小为1280*920，故要设置scale
 #define MY_SCALE_SIZE 0.54
@@ -693,8 +694,8 @@ void GameScene::hitByBullet()
 void GameScene::createMonster(int rate)
 {
 	//int num = 3 + rate/2;
-	int speed = 10 + 10 * ((rate + 1) / 2);
-
+	//int speed = 10 + 10 * ((rate + 1) / 2);
+	int speed = 20;
 	monsterManager.createMonster("enemy1_0.png", this, line1, monsterProperty(100, speed));
 	monsterManager.createMonster("enemy2_0.png", this, line2, monsterProperty(100, speed));
 	monsterManager.createMonster("enemy3_0.png", this, line3, monsterProperty(100, speed));
@@ -702,6 +703,22 @@ void GameScene::createMonster(int rate)
 
 void GameScene::gameWin()
 {
+	if (!isGameOver)
+	{
+		isGameOver = true;
+		Size visibleSize = Director::getInstance()->getVisibleSize();
+		Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+		auto win = Sprite::create("win.png");
+		win->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+		win->setScale(0.6);
+		this->addChild(win, 100);
+		char font[10] = { "胜利" };
+		String str = chineseDisplay::a(font);
+		Label* label = Label::createWithSystemFont(str.getCString(), "宋体", 60);
+		label->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+		this->addChild(label, 101);
+	}
 }
 
 void GameScene::gameLose()
@@ -710,11 +727,25 @@ void GameScene::gameLose()
 	{
 		CCLOG("game lose");
 		isGameOver = true;
+		Size visibleSize = Director::getInstance()->getVisibleSize();
+		Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
 		for (auto iter = bullets.begin(); iter != bullets.end(); iter++)
 		{
 			(*iter)->stopAllActions();
 		}
 		monsterManager.stopAllActions();
+
+		auto lose = Sprite::create("lose.png");
+		lose->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+		lose->setScale(0.6);
+		this->addChild(lose, 100);
+
+		char font[10] = { "失败" };
+		String str = chineseDisplay::a(font);
+		Label* label = Label::createWithSystemFont(str.getCString(), "宋体", 60);
+		label->setPosition(visibleSize.width / 2, visibleSize.height / 2);
+		this->addChild(label, 101);
 		//游戏结束
 	}
 }
