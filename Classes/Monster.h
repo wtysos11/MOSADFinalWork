@@ -247,5 +247,8 @@ public:
 			sp->stopAllActions();
 		}
 	}
+	float getHealth() {
+		return totemHealth;
+	}
 };
 #endif

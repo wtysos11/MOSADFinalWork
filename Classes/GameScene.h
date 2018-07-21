@@ -35,6 +35,7 @@ public:
 	void gameWin();
 	void gameLose();
 	void modifyMoney(int type);
+	void saveScore();
 private:
 	MonsterManager monsterManager;
 	TowerManager towerManager;
@@ -69,11 +70,12 @@ private:
 	bool judgingBullets = false;
 	//爆炸
 	cocos2d::Vector<SpriteFrame*> explore;
-
 	//金钱
 	int money = 400;
+	int score = 0;
 	Label* rateNum;
 	Label* moneyNum;
+	Label* scoreNum;
 	//游戏结束相关
 	bool isGameOver;
 };

@@ -3,6 +3,7 @@
 #include "Line.h"
 #include "SimpleAudioEngine.h"
 #include "chineseDisplay.h"
+#define database UserDefault::getInstance()
 USING_NS_CC;
 // 因为图片素材是用在1920*1080分辨率窗口里的，而本游戏窗口大小为1280*920，故要设置scale
 #define MY_SCALE_SIZE 0.54
@@ -358,14 +359,18 @@ void GameScene::update(float f)
 		else if (ct % dalaytime == 0) createMonster(rate);
 	}
 	else {	//判断是生成一波新怪兽还是游戏结束
-		if (monsterManager.isEmpty()) {
-			if (rate > 9) {
-				gameWin();
-			}
-			else {
-				is_create = true;
-				rate++;
-			}
+		ct++;
+		if (monsterManager.isEmpty() && rate > 9) {
+			gameWin();
+		}
+		if (ct == 100) {
+			ct = 0;
+			is_create = true;
+			rate++;
+			char str[15];
+			if (rate > 10) sprintf(str, "Rate: %d/10", rate);
+			else sprintf(str, "Rate: %d/10", rate + 1);
+			rateNum->setString(str);
 		}
 	}
 }
@@ -786,6 +791,7 @@ void GameScene::modifyMoney(int type)
 		//击杀怪兽
 	case 0:
 		money += 20;
+		score += 20;
 		break;
 
 		//升级1类型塔
@@ -809,4 +815,44 @@ void GameScene::modifyMoney(int type)
 	char str[15];
 	sprintf(str, "Money: %d", money);
 	moneyNum->setString(str);
+
+	sprintf(str, "Score: %d", score);
+	scoreNum->setString(str);
+}
+
+void GameScene::saveScore()
+{
+	score = score + money * 5 + monsterManager.getHealth() * 20;
+	int scoreNum[10];
+	scoreNum[0] = database->getIntegerForKey("one");
+	scoreNum[1] = database->getIntegerForKey("two");
+	scoreNum[2] = database->getIntegerForKey("three");
+	scoreNum[3] = database->getIntegerForKey("four");
+	scoreNum[4] = database->getIntegerForKey("five");
+	scoreNum[5] = database->getIntegerForKey("six");
+	scoreNum[6] = database->getIntegerForKey("seven");
+	scoreNum[7] = database->getIntegerForKey("eight");
+	scoreNum[8] = database->getIntegerForKey("nine");
+	scoreNum[9] = database->getIntegerForKey("ten");
+
+	int temp = 0;
+	for (int i = 0; i < 10; i++) {
+		if (score > scoreNum[i]) {
+			temp = scoreNum[i];
+			scoreNum[i] = score;
+			score = temp;
+		}
+	}
+
+	database->setBoolForKey("isExist", true);
+	database->setIntegerForKey("one", scoreNum[0]);
+	database->setIntegerForKey("two", scoreNum[1]);
+	database->setIntegerForKey("three", scoreNum[2]);
+	database->setIntegerForKey("four", scoreNum[3]);
+	database->setIntegerForKey("five", scoreNum[4]);
+	database->setIntegerForKey("six", scoreNum[5]);
+	database->setIntegerForKey("seven", scoreNum[6]);
+	database->setIntegerForKey("eight", scoreNum[7]);
+	database->setIntegerForKey("nine", scoreNum[8]);
+	database->setIntegerForKey("ten", scoreNum[9]);
 }
