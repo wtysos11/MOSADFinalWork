@@ -33,6 +33,7 @@ public:
 	void hitByBullet();
 	void createMonster(int rate);
 	void gameWin();
+	void gameLose();
 	void modifyMoney(int type);
 private:
 	MonsterManager monsterManager;
@@ -73,4 +74,6 @@ private:
 	int money = 400;
 	Label* rateNum;
 	Label* moneyNum;
+	//游戏结束相关
+	bool isGameOver;
 };

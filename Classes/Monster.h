@@ -106,10 +106,21 @@ public:
 	}
 	void totemAttacked()
 	{
-		totemHealth -= 5.0f;
+		totemHealth -= 50.0f;
 		if (totemHealth < 0)
 			totemHealth = 0;
 		healthBar->setPercentage(totemHealth);
+	}
+	bool gameLose()
+	{
+		if (totemHealth <= 0)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 
 	void createMonster(string picture, Scene* scene, myLine line, monsterProperty setting)
@@ -227,6 +238,14 @@ public:
 
 	bool isEmpty() {
 		return storage.empty();
+	}
+	void stopAllActions()
+	{
+		for (auto iter = storage.begin(); iter != storage.end(); iter++)
+		{
+			auto sp = (*iter).getSprite();
+			sp->stopAllActions();
+		}
 	}
 };
 #endif

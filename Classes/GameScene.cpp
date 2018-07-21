@@ -27,6 +27,7 @@ bool GameScene::init()
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
 	isQuit = false;
+	isGameOver = false;
 	float myXPosition = visibleSize.width / 2 + origin.x;
 	float myYPosition = visibleSize.height / 2 + origin.y;
 
@@ -76,7 +77,7 @@ bool GameScene::init()
 	totem->setPosition(Vec2(myXPosition, myYPosition - 300));
 	this->addChild(totem, 2);
 	*/
-	towerManager.createTower("Totem.png", TowerProperty(50, 300, 800,20), Vec2(myXPosition, myYPosition - 300),this);
+	towerManager.createTower("Totem.png", TowerProperty(10, 300, 800,20), Vec2(myXPosition, myYPosition - 300),this);
 
 	// 图腾子弹
 		/*
@@ -307,6 +308,16 @@ bool GameScene::init()
 
 void GameScene::update(float f)
 {
+	if (isGameOver)
+		return;
+
+	if (monsterManager.gameLose())
+	{
+		gameLose();
+	}
+
+
+
 	monsterManager.updateAll();
 	hitByBullet();
 
@@ -337,7 +348,7 @@ void GameScene::update(float f)
 void GameScene::onMouseMove(EventMouse* event)
 {
 	Vec2 x = event->getLocationInView();
-	CCLOG("%f,%f", x.x,x.y);
+	//CCLOG("%f,%f", x.x,x.y);
 	if (readyItem != NULL && !isQuit)
 	{
 		readyItem->setPosition(x.x, x.y);
@@ -402,9 +413,8 @@ void GameScene::quitCallback(Ref* pSender) {
 
 void GameScene::addTower1(Object* pSender)
 {
-	if (money < 200) return;
-	else modifyMoney(1);
-
+	if (isGameOver)
+		return;
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	if (readyItem != NULL)
 	{
@@ -419,9 +429,8 @@ void GameScene::addTower1(Object* pSender)
 }
 void GameScene::addTower2(Object* pSender)
 {
-	if (money < 200) return;
-	else modifyMoney(1);
-
+	if (isGameOver)
+		return;
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	if (readyItem != NULL)
 	{
@@ -436,9 +445,8 @@ void GameScene::addTower2(Object* pSender)
 }
 void GameScene::addTower3(Object* pSender)
 {
-	if (money < 200) return;
-	else modifyMoney(1);
-	
+	if (isGameOver)
+		return;
 	Size visibleSize = Director::getInstance()->getVisibleSize();
 	if (readyItem != NULL)
 	{
@@ -454,6 +462,9 @@ void GameScene::addTower3(Object* pSender)
 
 bool GameScene::onTouchBegan(Touch *touch, Event* event)
 {
+	if (isGameOver)
+		return false;
+
 	CCLOG("%f,%f", touch->getLocation().x, touch->getLocation().y);
 	if (prevPos.getDistance(touch->getLocation()) < 1)
 	{
@@ -477,6 +488,10 @@ bool GameScene::onTouchBegan(Touch *touch, Event* event)
 		}
 		else if (clickingTower.isGround() && clickItemtype != -1)//点击的是空地且待选项非空
 		{
+			if (money < 200)
+				return false;
+			else
+				modifyMoney(1);
 			towerManager.changeTower(touch->getLocation(), clickItemtype);
 
 			clickItemtype = -1;
@@ -545,6 +560,8 @@ void GameScene::updateTower(Object* pSender)
 //发射子弹
 void GameScene::bullet(float f)
 {
+	if (isGameOver)
+		return;
 	Sprite* Smonster;
 	Sprite* Stower;
 	for (auto iter = towerManager.tower.begin(); iter != towerManager.tower.end(); iter++)
@@ -674,6 +691,21 @@ void GameScene::createMonster(int rate)
 
 void GameScene::gameWin()
 {
+}
+
+void GameScene::gameLose()
+{
+	if (!isGameOver)
+	{
+		CCLOG("game lose");
+		isGameOver = true;
+		for (auto iter = bullets.begin(); iter != bullets.end(); iter++)
+		{
+			(*iter)->stopAllActions();
+		}
+		monsterManager.stopAllActions();
+		//游戏结束
+	}
 }
 
 //修改金币
