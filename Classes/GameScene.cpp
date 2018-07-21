@@ -35,6 +35,17 @@ bool GameScene::init()
 	auto listener = EventListenerMouse::create();
 	listener->onMouseMove = CC_CALLBACK_1(GameScene::onMouseMove, this);
 	_eventDispatcher->addEventListenerWithFixedPriority(listener, 1);
+	//º¸≈Ã ¬º˛
+	auto keyListener = EventListenerKeyboard::create();
+	keyListener->onKeyPressed = [this](EventKeyboard::KeyCode keyCode, Event* event) {
+		int code = (int)keyCode;
+		if (code == 6 && this->readyItem!=NULL)
+		{
+			this->readyItem->removeFromParentAndCleanup(true);
+			this->readyItem = NULL;
+		}
+	};
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
 
 	// ±≥æ∞“Ù¿÷
 	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
