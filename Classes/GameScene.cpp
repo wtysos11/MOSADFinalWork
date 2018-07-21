@@ -319,8 +319,12 @@ bool GameScene::init()
 	this->addChild(rateNum, 3);
 	moneyNum = Label::createWithTTF("Money: 400", "fonts/arial.TTF", 40);
 	moneyNum->setColor(Color3B(255, 255, 255));
-	moneyNum->setPosition(visibleSize.width - 165, visibleSize.height - 100);
+	moneyNum->setPosition(visibleSize.width - 170, visibleSize.height - 100);
 	this->addChild(moneyNum, 3);
+	scoreNum = Label::createWithTTF("Score: 0", "fonts/arial.TTF", 40);
+	scoreNum->setColor(Color3B(255, 255, 255));
+	scoreNum->setPosition(visibleSize.width - 182, visibleSize.height - 150);
+	this->addChild(scoreNum, 3);
 
 	//µ÷¶ÈÆ÷
 	schedule(schedule_selector(GameScene::update), 0.1f, kRepeatForever, 0);
@@ -712,7 +716,7 @@ void GameScene::hitByBullet()
 void GameScene::createMonster(int rate)
 {
 	//int num = 3 + rate/2;
-	int speed = 40 + 10 * ((rate + 1) / 2);
+	int speed = 30 + 10 * ((rate + 1) / 2);
 	monsterManager.createMonster("enemy1_0.png", this, line1, monsterProperty(100, speed));
 	monsterManager.createMonster("enemy2_0.png", this, line2, monsterProperty(100, speed));
 	monsterManager.createMonster("enemy3_0.png", this, line3, monsterProperty(100, speed));
