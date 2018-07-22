@@ -77,7 +77,7 @@ public:
 		if (type == 1)
 		{
 			tower->setTexture("tower1.png");
-			setting = TowerProperty(10, 400, 100, 5);
+			setting = TowerProperty(10, 400, 150, 5);
 		}
 		else if (type == 2)
 		{
@@ -87,7 +87,7 @@ public:
 		else if (type == 3)
 		{
 			tower->setTexture("tower3.png");
-			setting = TowerProperty(200, 100, 150, 20);
+			setting = TowerProperty(80, 100, 200, 20);
 		}
 		else if (type == 0)
 		{
@@ -134,11 +134,11 @@ public:
 		setting.rank++;
 		if (type == 1)
 		{
-			setting.attack += 5;
+			setting.attack += 10;
 		}
 		else if (type == 2)
 		{
-			setting.attack += 15;
+			setting.attack += 20;
 		}
 		else if (type == 3)
 		{
