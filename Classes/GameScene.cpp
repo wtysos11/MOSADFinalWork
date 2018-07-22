@@ -49,10 +49,14 @@ bool GameScene::init()
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
 
-	// ±³¾°ÒôÀÖ
+	// ±³¾°ÒôÀÖ ¼°¸÷ÖÖÒôÐ§
 	auto audio = CocosDenshion::SimpleAudioEngine::getInstance();
 	audio->preloadBackgroundMusic("sounds/Jungle_Battle.mp3");
 	audio->playBackgroundMusic("sounds/Jungle_Battle.mp3", true);
+	audio->preloadEffect("sounds/Sound_Sorcerer.wav");
+	audio->preloadEffect("sounds/savant_attack.wav");
+	audio->preloadEffect("sounds/dwaarp_attack.wav");
+	audio->preloadEffect("sounds/archmage_attack.wav");
 
 	// ±³¾°Í¼Æ¬
 	auto gameBg = Sprite::create("GameBg.png");
@@ -92,9 +96,13 @@ bool GameScene::init()
 		CC_CALLBACK_1(GameScene::addTower1, this));
 	tower1->setScale(0.7);
 	tower1->setPosition(Vec2(visibleSize.width - 150, 150));
-	auto towerMoney1 = Label::createWithSystemFont("200", "Microsoft Yahei", 36.0f);
-	towerMoney1->setColor(Color3B(255, 255, 0));
-	towerMoney1->setPosition(Vec2(visibleSize.width - 50, 150));
+	auto moneyLabel1 = Sprite::create("moneyLabel.png");
+	moneyLabel1->setScale(0.4);
+	moneyLabel1->setPosition(Vec2(visibleSize.width - 80, 150));
+	this->addChild(moneyLabel1, 6);
+	auto towerMoney1 = Label::createWithTTF("200", "fonts/Comic_Book.TTF", 24);
+	towerMoney1->setColor(Color3B(255, 255, 255));
+	towerMoney1->setPosition(Vec2(visibleSize.width - 35, 150));
 	this->addChild(towerMoney1, 6);
 
 	auto tower2 = MenuItemImage::create(
@@ -103,9 +111,13 @@ bool GameScene::init()
 		CC_CALLBACK_1(GameScene::addTower2, this));
 	tower2->setScale(0.8);
 	tower2->setPosition(Vec2(visibleSize.width - 150, 250));
-	auto towerMoney2 = Label::createWithSystemFont("200", "Microsoft Yahei", 36.0f);
-	towerMoney2->setColor(Color3B(255, 255, 0));
-	towerMoney2->setPosition(Vec2(visibleSize.width - 50, 250));
+	auto moneyLabel2 = Sprite::create("moneyLabel.png");
+	moneyLabel2->setScale(0.4);
+	moneyLabel2->setPosition(Vec2(visibleSize.width - 80, 250));
+	this->addChild(moneyLabel2, 6);
+	auto towerMoney2 = Label::createWithTTF("200", "fonts/Comic_Book.TTF", 24);
+	towerMoney2->setColor(Color3B(255, 255, 255));
+	towerMoney2->setPosition(Vec2(visibleSize.width - 35, 250));
 	this->addChild(towerMoney2, 6);
 
 	auto tower3 = MenuItemImage::create(
@@ -114,9 +126,13 @@ bool GameScene::init()
 		CC_CALLBACK_1(GameScene::addTower3, this));
 	tower3->setScale(0.8);
 	tower3->setPosition(Vec2(visibleSize.width - 150, 330));
-	auto towerMoney3 = Label::createWithSystemFont("200", "Microsoft Yahei", 36.0f);
-	towerMoney3->setColor(Color3B(255, 255, 0));
-	towerMoney3->setPosition(Vec2(visibleSize.width - 50, 330));
+	auto moneyLabel3 = Sprite::create("moneyLabel.png");
+	moneyLabel3->setScale(0.4);
+	moneyLabel3->setPosition(Vec2(visibleSize.width - 80, 330));
+	this->addChild(moneyLabel3, 6);
+	auto towerMoney3 = Label::createWithTTF("200", "fonts/Comic_Book.TTF", 24);
+	towerMoney3->setColor(Color3B(255, 255, 255));
+	towerMoney3->setPosition(Vec2(visibleSize.width - 35, 330));
 	this->addChild(towerMoney3, 6);
 
 	auto menu = Menu::create(tower1, tower2, tower3, NULL);
@@ -209,18 +225,39 @@ bool GameScene::init()
 	ct = 0;
 
 	//ÏÔÊ¾½ð±Ò¸ú²¨Êý
-	rateNum = Label::createWithTTF("Rate: 1/10", "fonts/arial.TTF", 40);
+	rateNum = Label::createWithTTF("1/10", "fonts/Comic_Book.TTF", 24);
 	rateNum->setColor(Color3B(255, 255, 255));
-	rateNum->setPosition(visibleSize.width - 150, visibleSize.height - 50);
-	this->addChild(rateNum, 3);
-	moneyNum = Label::createWithTTF("Money: 400", "fonts/arial.TTF", 40);
+	rateNum->setPosition(visibleSize.width - 195, visibleSize.height - 100);
+	this->addChild(rateNum, 11);
+	moneyNum = Label::createWithTTF("400", "fonts/Comic_Book.TTF", 24);
 	moneyNum->setColor(Color3B(255, 255, 255));
-	moneyNum->setPosition(visibleSize.width - 170, visibleSize.height - 100);
-	this->addChild(moneyNum, 3);
-	scoreNum = Label::createWithTTF("Score: 0", "fonts/arial.TTF", 40);
+	moneyNum->setPosition(visibleSize.width - 195, visibleSize.height - 50);
+	this->addChild(moneyNum, 11);
+	scoreNum = Label::createWithTTF("0", "fonts/Comic_Book.TTF", 24);
 	scoreNum->setColor(Color3B(255, 255, 255));
-	scoreNum->setPosition(visibleSize.width - 182, visibleSize.height - 150);
-	this->addChild(scoreNum, 3);
+	scoreNum->setPosition(visibleSize.width - 75, visibleSize.height - 50);
+	this->addChild(scoreNum, 11);
+
+	auto moneyBar = Sprite::create("moneyBar.png");
+	moneyBar->setScale(0.8);
+	moneyBar->setPosition(Vec2(myXPosition + 430, myYPosition + 310));
+	this->addChild(moneyBar, 10);
+
+	auto rateBar = Sprite::create("rateBar.png");
+	rateBar->setScale(0.8);
+	rateBar->setPosition(Vec2(myXPosition + 480, myYPosition + 260));
+	this->addChild(rateBar, 10);
+
+	auto blackBar = Sprite::create("blackBar.png");
+	blackBar->setScale(0.45, 0.55);
+	blackBar->setPosition(Vec2(myXPosition + 575, myYPosition + 310));
+	this->addChild(blackBar, 10);
+
+	auto scoreStar = Sprite::create("scoreStar.png");
+	scoreStar->setScale(0.7);
+	scoreStar->setPosition(Vec2(myXPosition + 515, myYPosition + 310));
+	this->addChild(scoreStar, 10);
+
 
 	//µ÷¶ÈÆ÷
 	schedule(schedule_selector(GameScene::update), 0.1f, kRepeatForever, 0);
@@ -268,8 +305,8 @@ void GameScene::update(float f)
 			is_create = true;
 			rate++;
 			char str[15];
-			if (rate > 10) sprintf(str, "Rate: %d/10", rate);
-			else sprintf(str, "Rate: %d/10", rate + 1);
+			if (rate > 10) sprintf(str, "%d/10", rate);
+			else sprintf(str, "%d/10", rate + 1);
 			rateNum->setString(str);
 		}
 	}
@@ -527,24 +564,32 @@ void GameScene::bullet(float f)
 					offsetx = -2;
 					offsety = 40;
 					scale = 0.8;
+					// ²¥·ÅÒôÐ§
+					CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sounds/dwaarp_attack.wav", false);			
 					break;
 				case 2:
 					picture = "tower2Bullet.png";
 					offsetx = -4;
 					offsety = 40;
 					scale = 0.5;
+					// ²¥·ÅÒôÐ§
+					CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sounds/Sound_Sorcerer.wav", false);
 					break;
 				case 3:
 					picture = "tower3Bullet.png";
 					offsetx = -4;
 					offsety = 13;
 					scale = 0.8;
+					// ²¥·ÅÒôÐ§
+					CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sounds/archmage_attack.wav", false);
 					break;
 				case 4:
 					picture = "TotemBullet.png";
 					offsetx = 16;
 					offsety = 50;
 					scale = 0.8;
+					// ²¥·ÅÒôÐ§
+					CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("sounds/savant_attack.wav", false);
 					break;
 				}
 				auto towerBullet = Sprite::create(picture);
@@ -553,7 +598,7 @@ void GameScene::bullet(float f)
 				auto time = Smonster->getPosition().getDistance(Stower->getPosition()) / (*iter).getTowerProperty().speed;
 
 				towerBullet->runAction(Sequence::create(MoveTo::create(time, Vec2(Smonster->getPosition())), FadeOut::create(time), nullptr));
-
+				
 				while (judgingBullets)//ÕýÔÚÅÐ¶ÏÅö×²µÄÊ±ºòÑÓ³Ù·¢Éä×Óµ¯£¨»¥³âËø£©
 				{
 				}
@@ -718,10 +763,10 @@ void GameScene::modifyMoney(int type)
 	}
 
 	char str[15];
-	sprintf(str, "Money: %d", money);
+	sprintf(str, "%d", money);
 	moneyNum->setString(str);
 
-	sprintf(str, "Score: %d", score);
+	sprintf(str, "%d", score);
 	scoreNum->setString(str);
 }
 

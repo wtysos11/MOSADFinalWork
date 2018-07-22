@@ -2,7 +2,7 @@
 #define _CHINESE_DISPLAY_H_
 
 #include <iostream>
-#include "stringapiset.h"
+//#include "stringapiset.h"
 #include "winerror.h"
 
 using namespace std;
