@@ -516,6 +516,7 @@ bool GameScene::onTouchBegan(Touch *touch, Event* event)
 void GameScene::deleteTower(Object* pSender)
 {
 	towerManager.deleteTower(menuPos);
+	money += 100;
 	towerMenu->removeFromParentAndCleanup(true);
 	towerMenu = NULL;
 }

@@ -132,7 +132,20 @@ public:
 	bool upRank() {
 		if (setting.rank == -1) return false;
 		setting.rank++;
-		setting.attack += 20;
+		if (type == 1)
+		{
+			setting.attack += 5;
+		}
+		else if (type == 2)
+		{
+			setting.attack += 15;
+		}
+		else if (type == 3)
+		{
+			setting.attack += 30;
+		}
+
+		
 		return true;
 	}
 };
