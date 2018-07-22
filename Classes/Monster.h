@@ -177,8 +177,8 @@ public:
 				bool ending = (*iter).moveForward(0.1f);
 				if (!ending)
 				{
-					//播放死亡动画，并在死亡后消灭它
-					monsterAnimate(*iter, "dead");
+					//播放攻击动画，并在攻击后消灭它
+					monsterAnimate(*iter, "attack");
 					totemAttacked();
 					(*iter).isActive = false;
 				}
@@ -229,6 +229,37 @@ public:
 				enemy->stopAllActions();
 				Animate* enemy3DeadAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy3DeadAnimation")); 
 				enemy->runAction(Sequence::create(enemy3DeadAnimation, CCDelayTime::create(1), CallFunc::create([enemy, healthBar]() {
+					enemy->removeFromParentAndCleanup(true);
+					healthBar->removeFromParentAndCleanup(true);
+				}), nullptr));
+			}
+		}
+		else if (behaviour == "attack")
+		{
+			monster.isActive = false;
+			if (monster.getType() == 1)
+			{
+				enemy->stopAllActions();
+				Animate* enemy1AttackAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy1AttackAnimation"));
+				enemy->runAction(Sequence::create(enemy1AttackAnimation, CCDelayTime::create(1), CallFunc::create([enemy, healthBar]() {
+					enemy->removeFromParentAndCleanup(true);
+					healthBar->removeFromParentAndCleanup(true);
+				}), nullptr));
+			}
+			else if (monster.getType() == 2)
+			{
+				enemy->stopAllActions();
+				Animate* enemy2AttackAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy2AttackAnimation"));
+				enemy->runAction(Sequence::create(enemy2AttackAnimation, CCDelayTime::create(1), CallFunc::create([enemy, healthBar]() {
+					enemy->removeFromParentAndCleanup(true);
+					healthBar->removeFromParentAndCleanup(true);
+				}), nullptr));
+			}
+			else if (monster.getType() == 3)
+			{
+				enemy->stopAllActions();
+				Animate* enemy3AttackAnimation = Animate::create(AnimationCache::getInstance()->getAnimation("enemy3AttackAnimation"));
+				enemy->runAction(Sequence::create(enemy3AttackAnimation, CCDelayTime::create(1), CallFunc::create([enemy, healthBar]() {
 					enemy->removeFromParentAndCleanup(true);
 					healthBar->removeFromParentAndCleanup(true);
 				}), nullptr));

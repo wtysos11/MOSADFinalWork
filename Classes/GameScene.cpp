@@ -82,7 +82,7 @@ bool GameScene::init()
 	monsterManager.registerHealthBar(healthBar);
 
 	//创建图腾
-	towerManager.createTower("Totem.png", TowerProperty(1000, 500, 300,30), Vec2(myXPosition, myYPosition - 300),this);
+	towerManager.createTower("Totem.png", TowerProperty(50, 500, 300,30), Vec2(myXPosition, myYPosition - 300),this);
 	
 	//塔选择菜单
 	readyItem = NULL;
@@ -373,6 +373,7 @@ void GameScene::walkMenuCallback(Ref* pSender) {
 
 void GameScene::quitCallback(Ref* pSender) {
 	isQuit = true;
+	saveScore();
 	auto newScene = MenuScene::createScene();
 	Director::getInstance()->replaceScene(CCTransitionFade::create(0.5, newScene));
 }
@@ -701,6 +702,7 @@ void GameScene::gameWin()
 		ps2->setStartColor(ccc4f(1, (float)251 / 255, (float)21 / 255, 1));
 		ps2->setEndColor(ccc4f(1, (float)251 / 255, (float)21 / 255, 1));
 		this->addChild(ps2, 50);
+		saveScore();
 	}
 }
 
@@ -729,6 +731,7 @@ void GameScene::gameLose()
 		Label* label = Label::createWithSystemFont(str.getCString(), "宋体", 60);
 		label->setPosition(visibleSize.width / 2, visibleSize.height / 2);
 		this->addChild(label, 101);
+		saveScore();
 		//游戏结束
 	}
 }
@@ -785,12 +788,13 @@ void GameScene::saveScore()
 	scoreNum[8] = database->getIntegerForKey("nine");
 	scoreNum[9] = database->getIntegerForKey("ten");
 
+	int changer = score;
 	int temp = 0;
 	for (int i = 0; i < 10; i++) {
 		if (score > scoreNum[i]) {
 			temp = scoreNum[i];
-			scoreNum[i] = score;
-			score = temp;
+			scoreNum[i] = changer;
+			changer = temp;
 		}
 	}
 
