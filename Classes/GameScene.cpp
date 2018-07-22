@@ -373,7 +373,8 @@ void GameScene::walkMenuCallback(Ref* pSender) {
 
 void GameScene::quitCallback(Ref* pSender) {
 	isQuit = true;
-	saveScore();
+	if(!isGameOver)
+		saveScore();
 	auto newScene = MenuScene::createScene();
 	Director::getInstance()->replaceScene(CCTransitionFade::create(0.5, newScene));
 }

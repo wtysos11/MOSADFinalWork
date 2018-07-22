@@ -140,7 +140,7 @@ bool MenuScene::init()
 	int ydelta = 30;
 	int fixPriority = 10;
 	int xdelta = 420;
-	int ymargin = 280;
+	int ymargin = 300;
 	auto Label1 = Label::createWithTTF("1. " + int2str(one), "fonts/Comic_Book.TTF", fontSize);
 	Label1->setPosition(visibleSize.width - xdelta, visibleSize.height - ymargin - ydelta*1);
 	Label1->setAnchorPoint(Vec2(0,0));
