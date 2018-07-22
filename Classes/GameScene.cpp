@@ -494,8 +494,9 @@ bool GameScene::onTouchBegan(Touch *touch, Event* event)
 			auto deleting = MenuItemImage::create("delete.png", "delete.png", CC_CALLBACK_1(GameScene::deleteTower, this));
 			deleting->setScale(0.4);
 			deleting->setPosition(Vec2(30, 50));
-			auto money = MenuItemLabel::create(Label::createWithSystemFont("200", "ËÎÌו", 24));
-			money->setPosition(-30, 70);
+			auto money = MenuItemLabel::create(Label::createWithSystemFont("200", "ËÎÌו", 18));
+			money->setColor(Color3B(255, 255, 0));
+			money->setPosition(-30, 80);
 
 			towerMenu = Menu::create(update, deleting, money, NULL);
 			towerMenu->setPosition(clickingTower.getPosition());
